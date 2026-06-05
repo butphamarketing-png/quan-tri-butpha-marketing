@@ -4,11 +4,6 @@
   "installCommand": "npm install -g pnpm@10.10.0 && pnpm install --no-frozen-lockfile",
   "buildCommand": "pnpm run build:api && cd artifacts/erp && pnpm run build",
   "outputDirectory": "artifacts/erp/dist/public",
-  "functions": {
-    "artifacts/api-server/dist/index.mjs": {
-      "runtime": "nodejs20.x"
-    }
-  },
   "routes": [
     {
       "src": "/api/(.*)",
