@@ -65949,6 +65949,13 @@ app.use(
 app.use((0, import_cors.default)());
 app.use(import_express24.default.json());
 app.use(import_express24.default.urlencoded({ extended: true }));
+app.get("/", (_req, res) => {
+  res.json({
+    message: "Ph\xE1 ERP API is running!",
+    version: "1.0.0",
+    documentation: "/api/healthz"
+  });
+});
 app.use("/api", routes_default);
 var app_default = app;
 
