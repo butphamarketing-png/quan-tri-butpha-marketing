@@ -2,11 +2,6 @@
   "version": 2,
   "buildCommand": "pnpm install --no-frozen-lockfile && cd artifacts/api-server && node build.mjs",
   "outputDirectory": "artifacts/api-server/dist",
-  "functions": {
-    "artifacts/api-server/dist/index.mjs": {
-      "runtime": "@vercel/node@3"
-    }
-  },
   "routes": [
     {
       "src": "/(.*)",
