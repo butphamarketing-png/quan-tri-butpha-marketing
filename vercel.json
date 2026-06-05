@@ -1,11 +1,5 @@
 {
   "version": 2,
   "framework": null,
-  "outputDirectory": "artifacts/api-server/dist",
-  "routes": [
-    {
-      "src": "/(.*)",
-      "dest": "artifacts/api-server/dist/index.mjs"
-    }
-  ]
+  "outputDirectory": "public"
 }
