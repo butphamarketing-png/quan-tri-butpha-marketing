@@ -7,16 +7,16 @@
   "routes": [
     {
       "src": "/api/(.*)",
-      "dest": "artifacts/api-server/dist/index.mjs"
+      "dest": "/api/index.mjs"
     },
     {
       "src": "/(.*)",
-      "dest": "artifacts/erp/dist/public/$1",
+      "dest": "/artifacts/erp/dist/public/$1",
       "check": true
     },
     {
       "src": "/(.*)",
-      "dest": "artifacts/erp/dist/public/index.html"
+      "dest": "/artifacts/erp/dist/public/index.html"
     }
   ]
 }
