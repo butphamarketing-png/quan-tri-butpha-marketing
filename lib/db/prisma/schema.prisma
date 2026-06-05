@@ -1,0 +1,729 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ================================
+// MODULE 1: CRM SALES
+// ================================
+
+// Lead Source Enum
+enum LeadSource {
+  WEBSITE
+  FACEBOOK
+  GOOGLE_MAPS
+  REFERRAL
+  OTHER
+}
+
+// Lead Status Enum
+enum LeadStatus {
+  NEW_LEAD
+  CONSULTING
+  QUOTATION_SENT
+  NEGOTIATING
+  CLOSED_WON
+  CLOSED_LOST
+}
+
+// Lead Table
+model Lead {
+  id                Int        @id @default(autoincrement())
+  fullName          String
+  phone             String?
+  email             String?
+  companyName       String?
+  source            LeadSource @default(OTHER)
+  interestedService String?
+  estimatedValue    Decimal?   @db.Decimal(18, 2)
+  assignedToId      Int?
+  status            LeadStatus @default(NEW_LEAD)
+  note              String?
+  createdAt         DateTime   @default(now()) @db.Timestamptz(6)
+  updatedAt         DateTime   @default(now()) @updatedAt @db.Timestamptz(6)
+
+  // Relations
+  assignedTo Employee? @relation("LeadToEmployee", fields: [assignedToId], references: [id], onDelete: SetNull)
+
+  // Indexes
+  @@index([assignedToId])
+  @@index([status])
+  @@index([source])
+}
+
+// ================================
+// MODULE 2: QUOTATION
+// ================================
+
+// Quotation Status Enum
+enum QuotationStatus {
+  DRAFT
+  SENT
+  ACCEPTED
+  REJECTED
+}
+
+// Quotation Table
+model Quotation {
+  id             Int             @id @default(autoincrement())
+  quotationCode  String          @unique
+  customerId     Int
+  status         QuotationStatus @default(DRAFT)
+  totalAmount    Decimal         @db.Decimal(18, 2)
+  createdAt      DateTime        @default(now()) @db.Timestamptz(6)
+  updatedAt      DateTime        @default(now()) @updatedAt @db.Timestamptz(6)
+
+  // Relations
+  customer Customer @relation("QuotationToCustomer", fields: [customerId], references: [id], onDelete: Cascade)
+  items    QuotationItem[] @relation("QuotationToItem")
+
+  // Indexes
+  @@index([customerId])
+  @@index([status])
+}
+
+// Quotation Item Table
+model QuotationItem {
+  id          Int     @id @default(autoincrement())
+  quotationId Int
+  serviceId   Int
+  quantity    Int     @default(1)
+  price       Decimal @db.Decimal(18, 2)
+
+  // Relations
+  quotation Quotation @relation("QuotationToItem", fields: [quotationId], references: [id], onDelete: Cascade)
+  service   Service   @relation("QuotationItemToService", fields: [serviceId], references: [id], onDelete: Cascade)
+
+  // Indexes
+  @@index([quotationId])
+  @@index([serviceId])
+}
+
+// ================================
+// MODULE 4: PROJECT MANAGEMENT
+// ================================
+
+// Project Status Enum
+enum ProjectStatus {
+  NOT_STARTED
+  IN_PROGRESS
+  PENDING_REVIEW
+  COMPLETED
+  PAUSED
+}
+
+// Project Table
+model Project {
+  id           Int           @id @default(autoincrement())
+  customerId   Int
+  contractId   Int?
+  projectName  String
+  startDate    DateTime?     @db.Date
+  deadline     DateTime?     @db.Date
+  status       ProjectStatus @default(NOT_STARTED)
+  progress     Int           @default(0)
+  createdAt    DateTime      @default(now()) @db.Timestamptz(6)
+  updatedAt    DateTime      @default(now()) @updatedAt @db.Timestamptz(6)
+
+  // Relations
+  customer Customer  @relation("ProjectToCustomer", fields: [customerId], references: [id], onDelete: Cascade)
+  contract Contract? @relation("ProjectToContract", fields: [contractId], references: [id], onDelete: SetNull)
+  tasks    Task[]    @relation("ProjectToTask")
+
+  // Indexes
+  @@index([customerId])
+  @@index([contractId])
+  @@index([status])
+}
+
+// ================================
+// MODULE 5: TASK MANAGEMENT
+// ================================
+
+// Task Priority Enum
+enum TaskPriority {
+  LOW
+  MEDIUM
+  HIGH
+  URGENT
+}
+
+// Task Status Enum
+enum TaskStatus {
+  TODO
+  IN_PROGRESS
+  REVIEW
+  DONE
+}
+
+// Task Table
+model Task {
+  id          Int          @id @default(autoincrement())
+  projectId   Int
+  title       String
+  description String?
+  assigneeId  Int?
+  priority    TaskPriority @default(MEDIUM)
+  dueDate     DateTime?    @db.Date
+  status      TaskStatus   @default(TODO)
+  createdAt   DateTime     @default(now()) @db.Timestamptz(6)
+  updatedAt   DateTime     @default(now()) @updatedAt @db.Timestamptz(6)
+
+  // Relations
+  project   Project    @relation("ProjectToTask", fields: [projectId], references: [id], onDelete: Cascade)
+  assignee  Employee?  @relation("TaskToEmployee", fields: [assigneeId], references: [id], onDelete: SetNull)
+  comments  Comment[]  @relation("TaskToComment")
+  checklists Checklist[] @relation("TaskToChecklist")
+  files     File[]     @relation("TaskToFile")
+
+  // Indexes
+  @@index([projectId])
+  @@index([assigneeId])
+  @@index([status])
+}
+
+// Comment Table
+model Comment {
+  id        Int      @id @default(autoincrement())
+  taskId    Int
+  userId    Int?
+  content   String
+  createdAt DateTime @default(now()) @db.Timestamptz(6)
+
+  // Relations
+  task Task  @relation("TaskToComment", fields: [taskId], references: [id], onDelete: Cascade)
+  user User? @relation("CommentToUser", fields: [userId], references: [id], onDelete: SetNull)
+
+  // Indexes
+  @@index([taskId])
+  @@index([userId])
+}
+
+// Checklist Table
+model Checklist {
+  id        Int      @id @default(autoincrement())
+  taskId    Int
+  title     String
+  completed Boolean  @default(false)
+  createdAt DateTime @default(now()) @db.Timestamptz(6)
+
+  // Relations
+  task Task @relation("TaskToChecklist", fields: [taskId], references: [id], onDelete: Cascade)
+
+  // Indexes
+  @@index([taskId])
+}
+
+// File Table (for Media Library & Attachments)
+model File {
+  id           Int      @id @default(autoincrement())
+  name         String
+  url          String
+  type         String
+  size         Int
+  folderId     Int?
+  customerId   Int?
+  taskId       Int?
+  uploadedById Int?
+  createdAt    DateTime @default(now()) @db.Timestamptz(6)
+
+  // Relations
+  folder     Folder?   @relation("FolderToFile", fields: [folderId], references: [id], onDelete: SetNull)
+  customer   Customer? @relation("FileToCustomer", fields: [customerId], references: [id], onDelete: SetNull)
+  task       Task?     @relation("TaskToFile", fields: [taskId], references: [id], onDelete: SetNull)
+  uploadedBy User?     @relation("UserToFile", fields: [uploadedById], references: [id], onDelete: SetNull)
+
+  // Indexes
+  @@index([folderId])
+  @@index([customerId])
+  @@index([taskId])
+  @@index([uploadedById])
+}
+
+// ================================
+// MODULE 6: CONTENT CALENDAR
+// ================================
+
+// Content Type Enum
+enum ContentType {
+  POST
+  REEL
+  STORY
+  VIDEO
+}
+
+// Content Status Enum
+enum ContentStatus {
+  DRAFT
+  PENDING_REVIEW
+  APPROVED
+  PUBLISHED
+}
+
+// Content Plan Table
+model ContentPlan {
+  id          Int           @id @default(autoincrement())
+  customerId  Int
+  fanpageId   Int?
+  title       String
+  contentType ContentType   @default(POST)
+  publishDate DateTime      @db.Date
+  status      ContentStatus @default(DRAFT)
+  content     String?
+  createdAt   DateTime      @default(now()) @db.Timestamptz(6)
+  updatedAt   DateTime      @default(now()) @updatedAt @db.Timestamptz(6)
+
+  // Relations
+  customer Customer  @relation("ContentPlanToCustomer", fields: [customerId], references: [id], onDelete: Cascade)
+  fanpage  Fanpage?  @relation("ContentPlanToFanpage", fields: [fanpageId], references: [id], onDelete: SetNull)
+
+  // Indexes
+  @@index([customerId])
+  @@index([fanpageId])
+  @@index([publishDate])
+  @@index([status])
+}
+
+// ================================
+// MODULE 7: MEDIA LIBRARY (Folders)
+// ================================
+
+// Folder Table
+model Folder {
+  id         Int      @id @default(autoincrement())
+  name       String
+  parentId   Int?
+  customerId Int?
+  createdAt  DateTime @default(now()) @db.Timestamptz(6)
+
+  // Relations
+  parent   Folder?  @relation("FolderHierarchy", fields: [parentId], references: [id], onDelete: Cascade)
+  children Folder[] @relation("FolderHierarchy")
+  customer Customer? @relation("FolderToCustomer", fields: [customerId], references: [id], onDelete: SetNull)
+  files    File[]   @relation("FolderToFile")
+
+  // Indexes
+  @@index([parentId])
+  @@index([customerId])
+}
+
+// ================================
+// MODULE 10: NOTIFICATIONS
+// ================================
+
+// Notification Type Enum
+enum NotificationType {
+  TASK_OVERDUE
+  DOMAIN_EXPIRING
+  HOSTING_EXPIRING
+  CONTRACT_EXPIRING
+  DEBT_OVERDUE
+}
+
+// Notification Table
+model Notification {
+  id        Int              @id @default(autoincrement())
+  userId    Int?
+  type      NotificationType
+  title     String
+  message   String
+  read      Boolean          @default(false)
+  createdAt DateTime         @default(now()) @db.Timestamptz(6)
+
+  // Relations
+  user User? @relation("UserToNotification", fields: [userId], references: [id], onDelete: Cascade)
+
+  // Indexes
+  @@index([userId])
+  @@index([read])
+}
+
+// ================================
+// MODULE 8: EMPLOYEE (Update existing)
+// ================================
+
+// Department Enum
+enum Department {
+  SALES
+  MARKETING
+  DEVELOPMENT
+  DESIGN
+  FINANCE
+  HR
+  ADMIN
+}
+
+// ================================
+// EXISTING TABLES (Update with relations)
+// ================================
+
+// User Table
+model User {
+  id           Int            @id @default(autoincrement())
+  email        String         @unique
+  password     String
+  fullName     String
+  role         String         @default("Sale")
+  status       String         @default("active")
+  employeeId   Int?           @unique
+  createdAt    DateTime       @default(now()) @db.Timestamptz(6)
+  updatedAt    DateTime       @default(now()) @updatedAt @db.Timestamptz(6)
+
+  // Relations
+  employee     Employee?      @relation("UserToEmployee", fields: [employeeId], references: [id], onDelete: SetNull)
+  comments     Comment[]      @relation("CommentToUser")
+  uploadedFiles File[]        @relation("UserToFile")
+  notifications Notification[] @relation("UserToNotification")
+  auditLogs    AuditLog[]     @relation("AuditLogToUser")
+
+  // Indexes
+  @@index([employeeId])
+}
+
+// Customer Table
+model Customer {
+  id           Int            @id @default(autoincrement())
+  name         String
+  phone        String?
+  email        String?
+  address      String?
+  notes        String?
+  createdAt    DateTime       @default(now()) @db.Timestamptz(6)
+  updatedAt    DateTime       @default(now()) @updatedAt @db.Timestamptz(6)
+
+  // Relations
+  contracts    Contract[]     @relation("ContractToCustomer")
+  projects     Project[]      @relation("ProjectToCustomer")
+  quotations   Quotation[]    @relation("QuotationToCustomer")
+  contentPlans ContentPlan[]  @relation("ContentPlanToCustomer")
+  folders      Folder[]       @relation("FolderToCustomer")
+  files        File[]         @relation("FileToCustomer")
+  debts        Debt[]         @relation("DebtToCustomer")
+  domains      Domain[]       @relation("DomainToCustomer")
+  hostings     Hosting[]      @relation("HostingToCustomer")
+  websites     Website[]      @relation("WebsiteToCustomer")
+  fanpages     Fanpage[]      @relation("FanpageToCustomer")
+  fanpageServices FanpageService[] @relation("FanpageServiceToCustomer")
+  facebookAds  FacebookAd[]   @relation("FacebookAdToCustomer")
+  googleProfiles GoogleProfile[] @relation("GoogleProfileToCustomer")
+  googleAds    GoogleAd[]     @relation("GoogleAdToCustomer")
+  receipts     Receipt[]      @relation("ReceiptToCustomer")
+
+  // Indexes
+  @@index([name])
+  @@index([email])
+  @@index([phone])
+}
+
+// Employee Table
+model Employee {
+  id            Int         @id @default(autoincrement())
+  fullName      String
+  department    Department? @default(SALES)
+  role          String      @default("Sale")
+  phone         String
+  email         String
+  status        String      @default("active")
+  createdAt     DateTime    @default(now()) @db.Timestamptz(6)
+  updatedAt     DateTime    @default(now()) @updatedAt @db.Timestamptz(6)
+
+  // Relations
+  user          User?       @relation("UserToEmployee")
+  assignedLeads Lead[]     @relation("LeadToEmployee")
+  assignedTasks Task[]     @relation("TaskToEmployee")
+
+  // Indexes
+  @@index([department])
+  @@index([email])
+}
+
+// Service Table
+model Service {
+  id          Int           @id @default(autoincrement())
+  name        String
+  type        String
+  description String?
+  price       Decimal?      @db.Decimal(18,2)
+  createdAt   DateTime      @default(now()) @db.Timestamptz(6)
+  updatedAt   DateTime      @default(now()) @updatedAt @db.Timestamptz(6)
+
+  // Relations
+  contracts   Contract[]    @relation("ContractToService")
+  quotations  QuotationItem[] @relation("QuotationItemToService")
+
+  // Indexes
+  @@index([type])
+}
+
+// Contract Table
+model Contract {
+  id          Int       @id @default(autoincrement())
+  code        String    @unique
+  customerId  Int
+  serviceId   Int?
+  totalValue  Decimal   @db.Decimal(18,2) @default(0)
+  paidAmount  Decimal   @db.Decimal(18,2) @default(0)
+  status      String    @default("active")
+  startDate   DateTime  @db.Date
+  endDate     DateTime? @db.Date
+  dueDate     DateTime? @db.Date
+  notes       String?
+  createdAt   DateTime  @default(now()) @db.Timestamptz(6)
+  updatedAt   DateTime  @default(now()) @updatedAt @db.Timestamptz(6)
+
+  // Relations
+  customer    Customer   @relation("ContractToCustomer", fields: [customerId], references: [id], onDelete: Cascade)
+  service     Service?   @relation("ContractToService", fields: [serviceId], references: [id], onDelete: SetNull)
+  projects    Project[]  @relation("ProjectToContract")
+  receipts    Receipt[]  @relation("ReceiptToContract")
+
+  // Indexes
+  @@index([customerId])
+  @@index([serviceId])
+  @@index([status])
+}
+
+// Receipt Table
+model Receipt {
+  id         Int       @id @default(autoincrement())
+  code       String    @unique
+  contractId Int?
+  customerId Int?
+  amount     Decimal   @db.Decimal(18, 2)
+  date       DateTime  @db.Date
+  notes      String?
+  createdAt  DateTime  @default(now()) @db.Timestamptz(6)
+  updatedAt  DateTime  @default(now()) @updatedAt @db.Timestamptz(6)
+
+  // Relations
+  contract   Contract? @relation("ReceiptToContract", fields: [contractId], references: [id], onDelete: SetNull)
+  customer   Customer? @relation("ReceiptToCustomer", fields: [customerId], references: [id], onDelete: SetNull)
+
+  // Indexes
+  @@index([contractId])
+  @@index([customerId])
+}
+
+// Expense Table
+model Expense {
+  id          Int       @id @default(autoincrement())
+  description String
+  amount      Decimal   @db.Decimal(18, 2)
+  date        DateTime  @db.Date
+  category    String?
+  notes       String?
+  createdAt   DateTime  @default(now()) @db.Timestamptz(6)
+  updatedAt   DateTime  @default(now()) @updatedAt @db.Timestamptz(6)
+}
+
+// Debt Table
+model Debt {
+  id          Int       @id @default(autoincrement())
+  customerId  Int
+  amount      Decimal   @db.Decimal(18, 2)
+  dueDate     DateTime  @db.Date
+  status      String    @default("unpaid")
+  notes       String?
+  createdAt   DateTime  @default(now()) @db.Timestamptz(6)
+  updatedAt   DateTime  @default(now()) @updatedAt @db.Timestamptz(6)
+
+  // Relations
+  customer    Customer  @relation("DebtToCustomer", fields: [customerId], references: [id], onDelete: Cascade)
+
+  // Indexes
+  @@index([customerId])
+  @@index([dueDate])
+}
+
+// Domain Table
+model Domain {
+  id          Int       @id @default(autoincrement())
+  customerId  Int
+  name        String
+  registrar   String?
+  purchaseDate DateTime @db.Date
+  expiryDate  DateTime @db.Date
+  status      String    @default("active")
+  notes       String?
+  createdAt   DateTime  @default(now()) @db.Timestamptz(6)
+  updatedAt   DateTime  @default(now()) @updatedAt @db.Timestamptz(6)
+
+  // Relations
+  customer    Customer  @relation("DomainToCustomer", fields: [customerId], references: [id], onDelete: Cascade)
+  websites    Website[] @relation("WebsiteToDomain")
+
+  // Indexes
+  @@index([customerId])
+  @@index([expiryDate])
+}
+
+// Hosting Table
+model Hosting {
+  id          Int       @id @default(autoincrement())
+  customerId  Int
+  provider    String?
+  plan        String?
+  purchaseDate DateTime @db.Date
+  expiryDate  DateTime @db.Date
+  status      String    @default("active")
+  notes       String?
+  createdAt   DateTime  @default(now()) @db.Timestamptz(6)
+  updatedAt   DateTime  @default(now()) @updatedAt @db.Timestamptz(6)
+
+  // Relations
+  customer    Customer  @relation("HostingToCustomer", fields: [customerId], references: [id], onDelete: Cascade)
+
+  // Indexes
+  @@index([customerId])
+  @@index([expiryDate])
+}
+
+// Website Table
+model Website {
+  id          Int       @id @default(autoincrement())
+  customerId  Int
+  domainId    Int?
+  url         String
+  status      String    @default("active")
+  notes       String?
+  createdAt   DateTime  @default(now()) @db.Timestamptz(6)
+  updatedAt   DateTime  @default(now()) @updatedAt @db.Timestamptz(6)
+
+  // Relations
+  customer    Customer  @relation("WebsiteToCustomer", fields: [customerId], references: [id], onDelete: Cascade)
+  domain      Domain?   @relation("WebsiteToDomain", fields: [domainId], references: [id], onDelete: SetNull)
+
+  // Indexes
+  @@index([customerId])
+  @@index([domainId])
+}
+
+// Fanpage Table
+model Fanpage {
+  id          Int       @id @default(autoincrement())
+  customerId  Int
+  name        String
+  url         String?
+  followers   Int?
+  status      String    @default("active")
+  notes       String?
+  createdAt   DateTime  @default(now()) @db.Timestamptz(6)
+  updatedAt   DateTime  @default(now()) @updatedAt @db.Timestamptz(6)
+
+  // Relations
+  customer    Customer       @relation("FanpageToCustomer", fields: [customerId], references: [id], onDelete: Cascade)
+  contentPlans ContentPlan[]  @relation("ContentPlanToFanpage")
+  fanpageServices FanpageService[] @relation("FanpageServiceToFanpage")
+
+  // Indexes
+  @@index([customerId])
+}
+
+// Fanpage Service Table
+model FanpageService {
+  id          Int       @id @default(autoincrement())
+  customerId  Int
+  fanpageId   Int?
+  serviceType String
+  startDate   DateTime  @db.Date
+  endDate     DateTime? @db.Date
+  status      String    @default("active")
+  notes       String?
+  createdAt   DateTime  @default(now()) @db.Timestamptz(6)
+  updatedAt   DateTime  @default(now()) @updatedAt @db.Timestamptz(6)
+
+  // Relations
+  customer    Customer @relation("FanpageServiceToCustomer", fields: [customerId], references: [id], onDelete: Cascade)
+  fanpage     Fanpage? @relation("FanpageServiceToFanpage", fields: [fanpageId], references: [id], onDelete: SetNull)
+
+  // Indexes
+  @@index([customerId])
+  @@index([fanpageId])
+}
+
+// Facebook Ad Table
+model FacebookAd {
+  id          Int       @id @default(autoincrement())
+  customerId  Int
+  campaignName String
+  budget      Decimal?  @db.Decimal(18, 2)
+  startDate   DateTime  @db.Date
+  endDate     DateTime? @db.Date
+  status      String    @default("active")
+  notes       String?
+  createdAt   DateTime  @default(now()) @db.Timestamptz(6)
+  updatedAt   DateTime  @default(now()) @updatedAt @db.Timestamptz(6)
+
+  // Relations
+  customer    Customer  @relation("FacebookAdToCustomer", fields: [customerId], references: [id], onDelete: Cascade)
+
+  // Indexes
+  @@index([customerId])
+}
+
+// Google Profile Table
+model GoogleProfile {
+  id          Int       @id @default(autoincrement())
+  customerId  Int
+  email       String
+  notes       String?
+  createdAt   DateTime  @default(now()) @db.Timestamptz(6)
+  updatedAt   DateTime  @default(now()) @updatedAt @db.Timestamptz(6)
+
+  // Relations
+  customer    Customer  @relation("GoogleProfileToCustomer", fields: [customerId], references: [id], onDelete: Cascade)
+  googleAds   GoogleAd[] @relation("GoogleAdToProfile")
+
+  // Indexes
+  @@index([customerId])
+}
+
+// Google Ad Table
+model GoogleAd {
+  id          Int       @id @default(autoincrement())
+  customerId  Int
+  profileId   Int?
+  campaignName String
+  budget      Decimal?  @db.Decimal(18, 2)
+  startDate   DateTime  @db.Date
+  endDate     DateTime? @db.Date
+  status      String    @default("active")
+  notes       String?
+  createdAt   DateTime  @default(now()) @db.Timestamptz(6)
+  updatedAt   DateTime  @default(now()) @updatedAt @db.Timestamptz(6)
+
+  // Relations
+  customer    Customer        @relation("GoogleAdToCustomer", fields: [customerId], references: [id], onDelete: Cascade)
+  profile     GoogleProfile?  @relation("GoogleAdToProfile", fields: [profileId], references: [id], onDelete: SetNull)
+
+  // Indexes
+  @@index([customerId])
+  @@index([profileId])
+}
+
+// Audit Log Table
+model AuditLog {
+  id        Int      @id @default(autoincrement())
+  userId    Int?
+  action    String
+  tableName String
+  recordId  Int?
+  oldValues Json?
+  newValues Json?
+  createdAt DateTime @default(now()) @db.Timestamptz(6)
+
+  // Relations
+  user User? @relation("AuditLogToUser", fields: [userId], references: [id], onDelete: SetNull)
+
+  // Indexes
+  @@index([userId])
+  @@index([tableName])
+  @@index([createdAt])
+}

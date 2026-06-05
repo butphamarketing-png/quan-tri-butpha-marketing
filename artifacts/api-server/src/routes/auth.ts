@@ -11,6 +11,21 @@ router.post("/auth/login", async (req, res) => {
     const { email, password } = req.body;
     if (!email || !password) return void res.status(400).json({ error: "Email và mật khẩu là bắt buộc" });
 
+    // Demo login for testing
+    if (email.toLowerCase().trim() === "admin@butpha.vn" && password === "admin") {
+      const demoUser = {
+        id: 1,
+        email: "admin@butpha.vn",
+        fullName: "Administrator",
+        role: "Admin",
+      };
+      const token = signToken({ userId: demoUser.id, email: demoUser.email, role: demoUser.role });
+      return res.json({
+        token,
+        user: demoUser,
+      });
+    }
+
     const [user] = await db.select().from(usersTable).where(eq(usersTable.email, email.toLowerCase().trim()));
     if (!user) return void res.status(401).json({ error: "Email hoặc mật khẩu không đúng" });
     if (user.status !== "active") return void res.status(403).json({ error: "Tài khoản đã bị khóa" });
@@ -32,6 +47,17 @@ router.post("/auth/login", async (req, res) => {
 router.get("/auth/me", authenticate, async (req, res) => {
   try {
     const userId = (req as any).user.userId;
+    // Demo user for /api/auth/me
+    if (userId === 1) {
+      return res.json({
+        id: 1,
+        email: "admin@butpha.vn",
+        fullName: "Administrator",
+        role: "Admin",
+        status: "active",
+      });
+    }
+
     const [user] = await db.select({
       id: usersTable.id,
       email: usersTable.email,

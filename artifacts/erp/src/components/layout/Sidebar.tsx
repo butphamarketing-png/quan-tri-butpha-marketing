@@ -82,8 +82,16 @@ export function Sidebar() {
     <SidebarComponent className="border-r shadow-sm">
       <SidebarHeader className="p-4 flex items-center justify-center border-b border-sidebar-border/50">
         <div className="font-bold text-xl tracking-tight flex items-center gap-2">
-          <div className="w-8 h-8 rounded bg-primary flex items-center justify-center text-primary-foreground">
-            Bứt
+          <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-purple-500 to-purple-700 flex items-center justify-center">
+            <svg width="24" height="24" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M15 90 L15 30 L35 55 L35 90 Z" fill="white" />
+              <path d="M35 90 L35 55 L50 35 L65 55 L65 90 Z" fill="white" />
+              <path d="M65 90 L65 30 L85 90 Z" fill="white" />
+              <path d="M40 45 L55 25 L70 45" stroke="white" strokeWidth="6" strokeLinecap="round" fill="none" />
+              <circle cx="40" cy="45" r="4" fill="white" />
+              <circle cx="55" cy="25" r="4" fill="white" />
+              <circle cx="70" cy="45" r="4" fill="white" />
+            </svg>
           </div>
           <span>Phá ERP</span>
         </div>
