@@ -1,8 +1,6 @@
 {
   "version": 2,
   "framework": null,
-  "installCommand": "npm install -g pnpm@10.10.0 && pnpm install --no-frozen-lockfile --ignore-scripts",
-  "buildCommand": "cd artifacts/api-server && node build.mjs",
   "outputDirectory": "artifacts/api-server/dist",
   "routes": [
     {
