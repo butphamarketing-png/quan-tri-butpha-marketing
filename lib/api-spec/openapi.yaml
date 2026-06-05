@@ -19,6 +19,17 @@ tags:
   - name: dashboard
   - name: reports
   - name: audit-logs
+  - name: auth
+  - name: debts
+  - name: domains
+  - name: hostings
+  - name: websites
+  - name: fanpages
+  - name: fanpage-services
+  - name: facebook-ads
+  - name: google-ads
+  - name: google-profiles
+  - name: employees
 
 paths:
   /healthz:
@@ -850,6 +861,946 @@ paths:
               schema:
                 $ref: "#/components/schemas/AuditLogList"
 
+  # ── AUTH ─────────────────────────────────────────────────────────────
+  /auth/login:
+    post:
+      operationId: loginAuth
+      tags: [auth]
+      summary: Login
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [email, password]
+              properties:
+                email: { type: string }
+                password: { type: string }
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token: { type: string }
+                  user:
+                    type: object
+
+  # ── DEBTS ────────────────────────────────────────────────────────────
+  /debts:
+    get:
+      operationId: listDebts
+      tags: [debts]
+      parameters:
+        - in: query
+          name: customerId
+          schema: { type: integer }
+        - in: query
+          name: status
+          schema: { type: string }
+        - in: query
+          name: page
+          schema: { type: integer, default: 1 }
+        - in: query
+          name: limit
+          schema: { type: integer, default: 20 }
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items: { $ref: "#/components/schemas/Debt" }
+                  pagination: { $ref: "#/components/schemas/Pagination" }
+    post:
+      operationId: createDebt
+      tags: [debts]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/DebtInput" }
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Debt" }
+  /debts/{id}:
+    get:
+      operationId: getDebt
+      tags: [debts]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: integer }
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Debt" }
+    patch:
+      operationId: updateDebt
+      tags: [debts]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: integer }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/DebtInput" }
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Debt" }
+    delete:
+      operationId: deleteDebt
+      tags: [debts]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: integer }
+      responses:
+        "204":
+          description: No content
+
+  # ── DOMAINS ─────────────────────────────────────────────────────────
+  /domains:
+    get:
+      operationId: listDomains
+      tags: [domains]
+      parameters:
+        - in: query
+          name: search
+          schema: { type: string }
+        - in: query
+          name: status
+          schema: { type: string }
+        - in: query
+          name: customerId
+          schema: { type: integer }
+        - in: query
+          name: page
+          schema: { type: integer, default: 1 }
+        - in: query
+          name: limit
+          schema: { type: integer, default: 20 }
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items: { $ref: "#/components/schemas/Domain" }
+                  pagination: { $ref: "#/components/schemas/Pagination" }
+    post:
+      operationId: createDomain
+      tags: [domains]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/DomainInput" }
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Domain" }
+  /domains/{id}:
+    get:
+      operationId: getDomain
+      tags: [domains]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: integer }
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Domain" }
+    patch:
+      operationId: updateDomain
+      tags: [domains]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: integer }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/DomainInput" }
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Domain" }
+    delete:
+      operationId: deleteDomain
+      tags: [domains]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: integer }
+      responses:
+        "204":
+          description: No content
+
+  # ── HOSTINGS ────────────────────────────────────────────────────────
+  /hostings:
+    get:
+      operationId: listHostings
+      tags: [hostings]
+      parameters:
+        - in: query
+          name: search
+          schema: { type: string }
+        - in: query
+          name: status
+          schema: { type: string }
+        - in: query
+          name: customerId
+          schema: { type: integer }
+        - in: query
+          name: page
+          schema: { type: integer, default: 1 }
+        - in: query
+          name: limit
+          schema: { type: integer, default: 20 }
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items: { $ref: "#/components/schemas/Hosting" }
+                  pagination: { $ref: "#/components/schemas/Pagination" }
+    post:
+      operationId: createHosting
+      tags: [hostings]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/HostingInput" }
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Hosting" }
+  /hostings/{id}:
+    get:
+      operationId: getHosting
+      tags: [hostings]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: integer }
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Hosting" }
+    patch:
+      operationId: updateHosting
+      tags: [hostings]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: integer }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/HostingInput" }
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Hosting" }
+    delete:
+      operationId: deleteHosting
+      tags: [hostings]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: integer }
+      responses:
+        "204":
+          description: No content
+
+  # ── WEBSITES ────────────────────────────────────────────────────────
+  /websites:
+    get:
+      operationId: listWebsites
+      tags: [websites]
+      parameters:
+        - in: query
+          name: search
+          schema: { type: string }
+        - in: query
+          name: status
+          schema: { type: string }
+        - in: query
+          name: customerId
+          schema: { type: integer }
+        - in: query
+          name: page
+          schema: { type: integer, default: 1 }
+        - in: query
+          name: limit
+          schema: { type: integer, default: 20 }
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items: { $ref: "#/components/schemas/Website" }
+                  pagination: { $ref: "#/components/schemas/Pagination" }
+    post:
+      operationId: createWebsite
+      tags: [websites]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/WebsiteInput" }
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Website" }
+  /websites/{id}:
+    get:
+      operationId: getWebsite
+      tags: [websites]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: integer }
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Website" }
+    patch:
+      operationId: updateWebsite
+      tags: [websites]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: integer }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/WebsiteInput" }
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Website" }
+    delete:
+      operationId: deleteWebsite
+      tags: [websites]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: integer }
+      responses:
+        "204":
+          description: No content
+
+  # ── FANPAGES ─────────────────────────────────────────────────────────
+  /fanpages:
+    get:
+      operationId: listFanpages
+      tags: [fanpages]
+      parameters:
+        - in: query
+          name: search
+          schema: { type: string }
+        - in: query
+          name: status
+          schema: { type: string }
+        - in: query
+          name: customerId
+          schema: { type: integer }
+        - in: query
+          name: page
+          schema: { type: integer, default: 1 }
+        - in: query
+          name: limit
+          schema: { type: integer, default: 20 }
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items: { $ref: "#/components/schemas/Fanpage" }
+                  pagination: { $ref: "#/components/schemas/Pagination" }
+    post:
+      operationId: createFanpage
+      tags: [fanpages]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/FanpageInput" }
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Fanpage" }
+  /fanpages/{id}:
+    get:
+      operationId: getFanpage
+      tags: [fanpages]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: integer }
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Fanpage" }
+    patch:
+      operationId: updateFanpage
+      tags: [fanpages]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: integer }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/FanpageInput" }
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Fanpage" }
+    delete:
+      operationId: deleteFanpage
+      tags: [fanpages]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: integer }
+      responses:
+        "204":
+          description: No content
+
+  # ── FANPAGE SERVICES ─────────────────────────────────────────────────
+  /fanpage-services:
+    get:
+      operationId: listFanpageServices
+      tags: [fanpage-services]
+      parameters:
+        - in: query
+          name: customerId
+          schema: { type: integer }
+        - in: query
+          name: status
+          schema: { type: string }
+        - in: query
+          name: page
+          schema: { type: integer, default: 1 }
+        - in: query
+          name: limit
+          schema: { type: integer, default: 20 }
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items: { $ref: "#/components/schemas/FanpageService" }
+                  pagination: { $ref: "#/components/schemas/Pagination" }
+    post:
+      operationId: createFanpageService
+      tags: [fanpage-services]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/FanpageServiceInput" }
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/FanpageService" }
+  /fanpage-services/{id}:
+    get:
+      operationId: getFanpageService
+      tags: [fanpage-services]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: integer }
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/FanpageService" }
+    patch:
+      operationId: updateFanpageService
+      tags: [fanpage-services]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: integer }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/FanpageServiceInput" }
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/FanpageService" }
+    delete:
+      operationId: deleteFanpageService
+      tags: [fanpage-services]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: integer }
+      responses:
+        "204":
+          description: No content
+
+  # ── FACEBOOK ADS ─────────────────────────────────────────────────────
+  /facebook-ads:
+    get:
+      operationId: listFacebookAds
+      tags: [facebook-ads]
+      parameters:
+        - in: query
+          name: customerId
+          schema: { type: integer }
+        - in: query
+          name: status
+          schema: { type: string }
+        - in: query
+          name: page
+          schema: { type: integer, default: 1 }
+        - in: query
+          name: limit
+          schema: { type: integer, default: 20 }
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items: { $ref: "#/components/schemas/FacebookAd" }
+                  pagination: { $ref: "#/components/schemas/Pagination" }
+    post:
+      operationId: createFacebookAd
+      tags: [facebook-ads]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/FacebookAdInput" }
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/FacebookAd" }
+  /facebook-ads/{id}:
+    get:
+      operationId: getFacebookAd
+      tags: [facebook-ads]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: integer }
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/FacebookAd" }
+    patch:
+      operationId: updateFacebookAd
+      tags: [facebook-ads]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: integer }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/FacebookAdInput" }
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/FacebookAd" }
+    delete:
+      operationId: deleteFacebookAd
+      tags: [facebook-ads]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: integer }
+      responses:
+        "204":
+          description: No content
+
+  # ── GOOGLE ADS ───────────────────────────────────────────────────────
+  /google-ads:
+    get:
+      operationId: listGoogleAds
+      tags: [google-ads]
+      parameters:
+        - in: query
+          name: customerId
+          schema: { type: integer }
+        - in: query
+          name: status
+          schema: { type: string }
+        - in: query
+          name: page
+          schema: { type: integer, default: 1 }
+        - in: query
+          name: limit
+          schema: { type: integer, default: 20 }
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items: { $ref: "#/components/schemas/GoogleAd" }
+                  pagination: { $ref: "#/components/schemas/Pagination" }
+    post:
+      operationId: createGoogleAd
+      tags: [google-ads]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/GoogleAdInput" }
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/GoogleAd" }
+  /google-ads/{id}:
+    get:
+      operationId: getGoogleAd
+      tags: [google-ads]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: integer }
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/GoogleAd" }
+    patch:
+      operationId: updateGoogleAd
+      tags: [google-ads]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: integer }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/GoogleAdInput" }
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/GoogleAd" }
+    delete:
+      operationId: deleteGoogleAd
+      tags: [google-ads]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: integer }
+      responses:
+        "204":
+          description: No content
+
+  # ── GOOGLE PROFILES ──────────────────────────────────────────────────
+  /google-profiles:
+    get:
+      operationId: listGoogleProfiles
+      tags: [google-profiles]
+      parameters:
+        - in: query
+          name: search
+          schema: { type: string }
+        - in: query
+          name: customerId
+          schema: { type: integer }
+        - in: query
+          name: page
+          schema: { type: integer, default: 1 }
+        - in: query
+          name: limit
+          schema: { type: integer, default: 20 }
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items: { $ref: "#/components/schemas/GoogleProfile" }
+                  pagination: { $ref: "#/components/schemas/Pagination" }
+    post:
+      operationId: createGoogleProfile
+      tags: [google-profiles]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/GoogleProfileInput" }
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/GoogleProfile" }
+  /google-profiles/{id}:
+    get:
+      operationId: getGoogleProfile
+      tags: [google-profiles]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: integer }
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/GoogleProfile" }
+    patch:
+      operationId: updateGoogleProfile
+      tags: [google-profiles]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: integer }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/GoogleProfileInput" }
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/GoogleProfile" }
+    delete:
+      operationId: deleteGoogleProfile
+      tags: [google-profiles]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: integer }
+      responses:
+        "204":
+          description: No content
+
+  # ── EMPLOYEES ────────────────────────────────────────────────────────
+  /employees:
+    get:
+      operationId: listEmployees
+      tags: [employees]
+      parameters:
+        - in: query
+          name: search
+          schema: { type: string }
+        - in: query
+          name: status
+          schema: { type: string }
+        - in: query
+          name: page
+          schema: { type: integer, default: 1 }
+        - in: query
+          name: limit
+          schema: { type: integer, default: 20 }
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items: { $ref: "#/components/schemas/Employee" }
+                  pagination: { $ref: "#/components/schemas/Pagination" }
+    post:
+      operationId: createEmployee
+      tags: [employees]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/EmployeeInput" }
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Employee" }
+  /employees/{id}:
+    get:
+      operationId: getEmployee
+      tags: [employees]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: integer }
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Employee" }
+    patch:
+      operationId: updateEmployee
+      tags: [employees]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: integer }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/EmployeeInput" }
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Employee" }
+    delete:
+      operationId: deleteEmployee
+      tags: [employees]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: integer }
+      responses:
+        "204":
+          description: No content
+
 components:
   schemas:
     HealthStatus:
@@ -1359,3 +2310,299 @@ components:
         total: { type: integer }
         page: { type: integer }
         limit: { type: integer }
+
+
+    # ── PAGINATION ────────────────────────────────────────────────────────
+    Pagination:
+      type: object
+      properties:
+        page: { type: integer }
+        limit: { type: integer }
+        total: { type: integer }
+        totalPages: { type: integer }
+
+    # ── DEBT ─────────────────────────────────────────────────────────────
+    Debt:
+      type: object
+      properties:
+        id: { type: integer }
+        customerId: { type: integer }
+        customerName: { type: ["string", "null"] }
+        contractId: { type: ["integer", "null"] }
+        totalAmount: { type: number }
+        paidAmount: { type: number }
+        dueDate: { type: string }
+        status: { type: string }
+        createdAt: { type: string }
+        updatedAt: { type: string }
+    DebtInput:
+      type: object
+      properties:
+        customerId: { type: integer }
+        contractId: { type: integer }
+        totalAmount: { type: number }
+        paidAmount: { type: number }
+        dueDate: { type: string }
+        status: { type: string }
+
+    # ── DOMAIN ───────────────────────────────────────────────────────────
+    Domain:
+      type: object
+      properties:
+        id: { type: integer }
+        customerId: { type: integer }
+        customerName: { type: ["string", "null"] }
+        domainName: { type: string }
+        provider: { type: string }
+        registerDate: { type: string }
+        expireDate: { type: string }
+        buyPrice: { type: ["number", "null"] }
+        sellPrice: { type: ["number", "null"] }
+        daysUntilExpiry: { type: integer }
+        status: { type: string }
+        note: { type: ["string", "null"] }
+        createdAt: { type: string }
+        updatedAt: { type: string }
+    DomainInput:
+      type: object
+      properties:
+        customerId: { type: integer }
+        domainName: { type: string }
+        provider: { type: string }
+        registerDate: { type: string }
+        expireDate: { type: string }
+        buyPrice: { type: number }
+        sellPrice: { type: number }
+        status: { type: string }
+        note: { type: string }
+
+    # ── HOSTING ──────────────────────────────────────────────────────────
+    Hosting:
+      type: object
+      properties:
+        id: { type: integer }
+        customerId: { type: integer }
+        customerName: { type: ["string", "null"] }
+        hostingName: { type: string }
+        provider: { type: string }
+        package: { type: string }
+        capacity: { type: ["string", "null"] }
+        registerDate: { type: string }
+        expireDate: { type: string }
+        buyPrice: { type: ["number", "null"] }
+        sellPrice: { type: ["number", "null"] }
+        daysUntilExpiry: { type: integer }
+        status: { type: string }
+        note: { type: ["string", "null"] }
+        createdAt: { type: string }
+        updatedAt: { type: string }
+    HostingInput:
+      type: object
+      properties:
+        customerId: { type: integer }
+        hostingName: { type: string }
+        provider: { type: string }
+        package: { type: string }
+        capacity: { type: string }
+        registerDate: { type: string }
+        expireDate: { type: string }
+        buyPrice: { type: number }
+        sellPrice: { type: number }
+        status: { type: string }
+        note: { type: string }
+
+    # ── WEBSITE ──────────────────────────────────────────────────────────
+    Website:
+      type: object
+      properties:
+        id: { type: integer }
+        customerId: { type: integer }
+        customerName: { type: ["string", "null"] }
+        websiteName: { type: string }
+        cms: { type: string }
+        technology: { type: ["string", "null"] }
+        domainId: { type: ["integer", "null"] }
+        domainName: { type: ["string", "null"] }
+        hostingId: { type: ["integer", "null"] }
+        hostingName: { type: ["string", "null"] }
+        startDate: { type: ["string", "null"] }
+        deadline: { type: ["string", "null"] }
+        deliveryDate: { type: ["string", "null"] }
+        contractValue: { type: ["number", "null"] }
+        adminUrl: { type: ["string", "null"] }
+        status: { type: string }
+        note: { type: ["string", "null"] }
+        createdAt: { type: string }
+        updatedAt: { type: string }
+    WebsiteInput:
+      type: object
+      properties:
+        customerId: { type: integer }
+        websiteName: { type: string }
+        cms: { type: string }
+        technology: { type: string }
+        domainId: { type: integer }
+        hostingId: { type: integer }
+        startDate: { type: string }
+        deadline: { type: string }
+        deliveryDate: { type: string }
+        contractValue: { type: number }
+        adminUrl: { type: string }
+        username: { type: string }
+        status: { type: string }
+        note: { type: string }
+
+    # ── FANPAGE ──────────────────────────────────────────────────────────
+    Fanpage:
+      type: object
+      properties:
+        id: { type: integer }
+        customerId: { type: integer }
+        customerName: { type: ["string", "null"] }
+        pageName: { type: string }
+        pageUrl: { type: string }
+        pageId: { type: ["string", "null"] }
+        category: { type: ["string", "null"] }
+        followers: { type: ["integer", "null"] }
+        status: { type: string }
+        createdAt: { type: string }
+        updatedAt: { type: string }
+    FanpageInput:
+      type: object
+      properties:
+        customerId: { type: integer }
+        pageName: { type: string }
+        pageUrl: { type: string }
+        pageId: { type: string }
+        category: { type: string }
+        followers: { type: integer }
+        status: { type: string }
+
+    # ── FANPAGE SERVICE ──────────────────────────────────────────────────
+    FanpageService:
+      type: object
+      properties:
+        id: { type: integer }
+        customerId: { type: integer }
+        customerName: { type: ["string", "null"] }
+        packageName: { type: string }
+        postsPerMonth: { type: integer }
+        reelsPerMonth: { type: integer }
+        monthlyFee: { type: ["number", "null"] }
+        startDate: { type: string }
+        endDate: { type: string }
+        status: { type: string }
+        createdAt: { type: string }
+        updatedAt: { type: string }
+    FanpageServiceInput:
+      type: object
+      properties:
+        customerId: { type: integer }
+        packageName: { type: string }
+        postsPerMonth: { type: integer }
+        reelsPerMonth: { type: integer }
+        monthlyFee: { type: number }
+        startDate: { type: string }
+        endDate: { type: string }
+        status: { type: string }
+
+    # ── FACEBOOK AD ──────────────────────────────────────────────────────
+    FacebookAd:
+      type: object
+      properties:
+        id: { type: integer }
+        customerId: { type: integer }
+        customerName: { type: ["string", "null"] }
+        adAccount: { type: ["string", "null"] }
+        monthlyBudget: { type: number }
+        spend: { type: number }
+        leads: { type: integer }
+        status: { type: string }
+        createdAt: { type: string }
+        updatedAt: { type: string }
+    FacebookAdInput:
+      type: object
+      properties:
+        customerId: { type: integer }
+        adAccount: { type: string }
+        monthlyBudget: { type: number }
+        spend: { type: number }
+        leads: { type: integer }
+        status: { type: string }
+
+    # ── GOOGLE AD ────────────────────────────────────────────────────────
+    GoogleAd:
+      type: object
+      properties:
+        id: { type: integer }
+        customerId: { type: integer }
+        customerName: { type: ["string", "null"] }
+        campaignName: { type: string }
+        budget: { type: number }
+        spend: { type: number }
+        leads: { type: integer }
+        impressions: { type: integer }
+        phoneCalls: { type: integer }
+        directions: { type: integer }
+        status: { type: string }
+        createdAt: { type: string }
+        updatedAt: { type: string }
+    GoogleAdInput:
+      type: object
+      properties:
+        customerId: { type: integer }
+        campaignName: { type: string }
+        budget: { type: number }
+        spend: { type: number }
+        leads: { type: integer }
+        impressions: { type: integer }
+        phoneCalls: { type: integer }
+        directions: { type: integer }
+        status: { type: string }
+
+    # ── GOOGLE PROFILE ───────────────────────────────────────────────────
+    GoogleProfile:
+      type: object
+      properties:
+        id: { type: integer }
+        customerId: { type: integer }
+        customerName: { type: ["string", "null"] }
+        businessName: { type: string }
+        mapLink: { type: ["string", "null"] }
+        category: { type: ["string", "null"] }
+        reviewCount: { type: ["integer", "null"] }
+        rating: { type: ["number", "null"] }
+        status: { type: string }
+        createdAt: { type: string }
+        updatedAt: { type: string }
+    GoogleProfileInput:
+      type: object
+      properties:
+        customerId: { type: integer }
+        businessName: { type: string }
+        mapLink: { type: string }
+        category: { type: string }
+        reviewCount: { type: integer }
+        rating: { type: number }
+        status: { type: string }
+
+    # ── EMPLOYEE ─────────────────────────────────────────────────────────
+    Employee:
+      type: object
+      properties:
+        id: { type: integer }
+        fullName: { type: string }
+        phone: { type: string }
+        email: { type: string }
+        role: { type: string }
+        status: { type: string }
+        createdAt: { type: string }
+        updatedAt: { type: string }
+    EmployeeInput:
+      type: object
+      properties:
+        fullName: { type: string }
+        phone: { type: string }
+        email: { type: string }
+        role: { type: string }
+        status: { type: string }

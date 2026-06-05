@@ -10,9 +10,9 @@ export default function AccountsReceivable() {
   const [page, setPage] = useState(1);
   const [status, setStatus] = useState("");
 
-  const { data, isLoading } = useListAccountsReceivable({ status: status || undefined, page, limit: 20 });
+  const { data, isLoading } = useListAccountsReceivable({ status: (status || undefined) as ("paid" | "unpaid" | "overdue") | undefined, page, limit: 20 });
 
-  const rows = (data?.data ?? []) as Record<string, unknown>[];
+  const rows = (data?.data ?? []) as unknown as Record<string, unknown>[];
   const columns = [
     { key: "contractCode", header: "Mã Hợp Đồng" },
     { key: "customerName", header: "Khách Hàng" },
@@ -23,7 +23,7 @@ export default function AccountsReceivable() {
     { key: "status", header: "Trạng Thái", render: (r: Record<string, unknown>) => <StatusBadge status={r.status as string} /> },
   ];
 
-  const totalReceivable = (data as Record<string, unknown>)?.totalReceivable as number ?? 0;
+  const totalReceivable = (data as unknown as Record<string, unknown>)?.totalReceivable as number ?? 0;
 
   return (
     <div>

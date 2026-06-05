@@ -10,10 +10,22 @@ import accountsRouter from "./accounts";
 import dashboardRouter from "./dashboard";
 import reportsRouter from "./reports";
 import auditLogsRouter from "./audit-logs";
+import authRouter from "./auth";
+import debtsRouter from "./debts";
+import domainsRouter from "./domains";
+import hostingsRouter from "./hostings";
+import websitesRouter from "./websites";
+import fanpagesRouter from "./fanpages";
+import fanpageServicesRouter from "./fanpageServices";
+import facebookAdsRouter from "./facebookAds";
+import googleAdsRouter from "./googleAds";
+import googleProfilesRouter from "./googleProfiles";
+import employeesRouter from "./employees";
 
 const router: IRouter = Router();
 
 router.use(healthRouter);
+router.use(authRouter);
 router.use(customersRouter);
 router.use(servicesRouter);
 router.use(suppliersRouter);
@@ -24,5 +36,15 @@ router.use(accountsRouter);
 router.use(dashboardRouter);
 router.use(reportsRouter);
 router.use(auditLogsRouter);
+router.use(debtsRouter);
+router.use(domainsRouter);
+router.use(hostingsRouter);
+router.use(websitesRouter);
+router.use(fanpagesRouter);
+router.use(fanpageServicesRouter);
+router.use(facebookAdsRouter);
+router.use(googleAdsRouter);
+router.use(googleProfilesRouter);
+router.use(employeesRouter);
 
 export default router;

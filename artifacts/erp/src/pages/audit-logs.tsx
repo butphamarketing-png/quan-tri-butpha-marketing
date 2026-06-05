@@ -19,7 +19,7 @@ export default function AuditLogs() {
   const actionLabels: Record<string, string> = { create: "Tạo mới", update: "Cập nhật", delete: "Xóa" };
   const entityLabels: Record<string, string> = { customer: "Khách hàng", service: "Dịch vụ", supplier: "Nhà cung cấp", contract: "Hợp đồng", receipt: "Phiếu thu", expense: "Phiếu chi" };
 
-  const rows = (data?.data ?? []) as Record<string, unknown>[];
+  const rows = (data?.data ?? []) as unknown as Record<string, unknown>[];
   const columns = [
     { key: "createdAt", header: "Thời Gian", render: (r: Record<string, unknown>) => formatDateTime(r.createdAt as string) },
     { key: "entityType", header: "Đối Tượng", render: (r: Record<string, unknown>) => entityLabels[r.entityType as string] ?? String(r.entityType) },

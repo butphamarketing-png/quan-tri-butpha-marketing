@@ -10,9 +10,9 @@ export default function AccountsPayable() {
   const [page, setPage] = useState(1);
   const [status, setStatus] = useState("");
 
-  const { data, isLoading } = useListAccountsPayable({ status: status || undefined, page, limit: 20 });
+  const { data, isLoading } = useListAccountsPayable({ status: (status || undefined) as ("paid" | "unpaid") | undefined, page, limit: 20 });
 
-  const rows = (data?.data ?? []) as Record<string, unknown>[];
+  const rows = (data?.data ?? []) as unknown as Record<string, unknown>[];
   const columns = [
     { key: "supplierName", header: "Nhà Cung Cấp" },
     { key: "category", header: "Loại", render: (r: Record<string, unknown>) => <StatusBadge status={r.category as string} /> },
@@ -22,7 +22,7 @@ export default function AccountsPayable() {
     { key: "status", header: "Trạng Thái", render: (r: Record<string, unknown>) => <StatusBadge status={r.status as string} /> },
   ];
 
-  const totalPayable = (data as Record<string, unknown>)?.totalPayable as number ?? 0;
+  const totalPayable = (data as unknown as Record<string, unknown>)?.totalPayable as number ?? 0;
 
   return (
     <div>

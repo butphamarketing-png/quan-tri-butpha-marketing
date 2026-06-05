@@ -113,7 +113,7 @@ export default function Receipts() {
     }
   };
 
-  const rows = (data?.data ?? []) as Record<string, unknown>[];
+  const rows = (data?.data ?? []) as unknown as Record<string, unknown>[];
   const columns = [
     { key: "code", header: "Mã PT" },
     { key: "receiptDate", header: "Ngày Thu", render: (r: Record<string, unknown>) => formatDate(r.receiptDate as string) },
@@ -155,7 +155,7 @@ export default function Receipts() {
                 <Label>Khách Hàng *</Label>
                 <Select value={form.customerId} onValueChange={v => setForm({ ...form, customerId: v })}>
                   <SelectTrigger><SelectValue placeholder="Chọn khách hàng" /></SelectTrigger>
-                  <SelectContent>{(customers?.data ?? []).map((c: Record<string, unknown>) => <SelectItem key={String(c.id)} value={String(c.id)}>{String(c.name)}</SelectItem>)}</SelectContent>
+                  <SelectContent>{(customers?.data ?? []).map((c: any) => <SelectItem key={String(c.id)} value={String(c.id)}>{String(c.name)}</SelectItem>)}</SelectContent>
                 </Select>
               </div>
               <div className="space-y-1">
@@ -164,7 +164,7 @@ export default function Receipts() {
                   <SelectTrigger><SelectValue placeholder="Chọn hợp đồng" /></SelectTrigger>
                   <SelectContent>
                     <SelectItem value="">Không có</SelectItem>
-                    {(contracts?.data ?? []).filter((c: Record<string, unknown>) => !form.customerId || String(c.customerId) === form.customerId).map((c: Record<string, unknown>) => <SelectItem key={String(c.id)} value={String(c.id)}>{String(c.code)}</SelectItem>)}
+                    {(contracts?.data ?? []).filter((c: any) => !form.customerId || String(c.customerId) === form.customerId).map((c: any) => <SelectItem key={String(c.id)} value={String(c.id)}>{String(c.code)}</SelectItem>)}
                   </SelectContent>
                 </Select>
               </div>
@@ -174,7 +174,7 @@ export default function Receipts() {
                   <SelectTrigger><SelectValue placeholder="Chọn dịch vụ" /></SelectTrigger>
                   <SelectContent>
                     <SelectItem value="">Không có</SelectItem>
-                    {(services?.data ?? []).map((s: Record<string, unknown>) => <SelectItem key={String(s.id)} value={String(s.id)}>{String(s.name)}</SelectItem>)}
+                    {(services?.data ?? []).map((s: any) => <SelectItem key={String(s.id)} value={String(s.id)}>{String(s.name)}</SelectItem>)}
                   </SelectContent>
                 </Select>
               </div>

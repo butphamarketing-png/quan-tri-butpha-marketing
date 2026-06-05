@@ -852,3 +852,1059 @@ export const ListAuditLogsResponse = zod.object({
 })
 
 
+/**
+ * @summary Login
+ */
+export const LoginAuthBody = zod.object({
+  "email": zod.string(),
+  "password": zod.string()
+})
+
+export const LoginAuthResponse = zod.object({
+  "token": zod.string().optional(),
+  "user": zod.object({
+
+}).passthrough().optional()
+})
+
+
+export const listDebtsQueryPageDefault = 1;
+export const listDebtsQueryLimitDefault = 20;
+
+export const ListDebtsQueryParams = zod.object({
+  "customerId": zod.coerce.number().optional(),
+  "status": zod.coerce.string().optional(),
+  "page": zod.coerce.number().default(listDebtsQueryPageDefault),
+  "limit": zod.coerce.number().default(listDebtsQueryLimitDefault)
+})
+
+export const ListDebtsResponse = zod.object({
+  "data": zod.array(zod.object({
+  "id": zod.number().optional(),
+  "customerId": zod.number().optional(),
+  "customerName": zod.string().nullish(),
+  "contractId": zod.number().nullish(),
+  "totalAmount": zod.number().optional(),
+  "paidAmount": zod.number().optional(),
+  "dueDate": zod.string().optional(),
+  "status": zod.string().optional(),
+  "createdAt": zod.string().optional(),
+  "updatedAt": zod.string().optional()
+})).optional(),
+  "pagination": zod.object({
+  "page": zod.number().optional(),
+  "limit": zod.number().optional(),
+  "total": zod.number().optional(),
+  "totalPages": zod.number().optional()
+}).optional()
+})
+
+
+export const CreateDebtBody = zod.object({
+  "customerId": zod.number().optional(),
+  "contractId": zod.number().optional(),
+  "totalAmount": zod.number().optional(),
+  "paidAmount": zod.number().optional(),
+  "dueDate": zod.string().optional(),
+  "status": zod.string().optional()
+})
+
+
+export const GetDebtParams = zod.object({
+  "id": zod.coerce.number()
+})
+
+export const GetDebtResponse = zod.object({
+  "id": zod.number().optional(),
+  "customerId": zod.number().optional(),
+  "customerName": zod.string().nullish(),
+  "contractId": zod.number().nullish(),
+  "totalAmount": zod.number().optional(),
+  "paidAmount": zod.number().optional(),
+  "dueDate": zod.string().optional(),
+  "status": zod.string().optional(),
+  "createdAt": zod.string().optional(),
+  "updatedAt": zod.string().optional()
+})
+
+
+export const UpdateDebtParams = zod.object({
+  "id": zod.coerce.number()
+})
+
+export const UpdateDebtBody = zod.object({
+  "customerId": zod.number().optional(),
+  "contractId": zod.number().optional(),
+  "totalAmount": zod.number().optional(),
+  "paidAmount": zod.number().optional(),
+  "dueDate": zod.string().optional(),
+  "status": zod.string().optional()
+})
+
+export const UpdateDebtResponse = zod.object({
+  "id": zod.number().optional(),
+  "customerId": zod.number().optional(),
+  "customerName": zod.string().nullish(),
+  "contractId": zod.number().nullish(),
+  "totalAmount": zod.number().optional(),
+  "paidAmount": zod.number().optional(),
+  "dueDate": zod.string().optional(),
+  "status": zod.string().optional(),
+  "createdAt": zod.string().optional(),
+  "updatedAt": zod.string().optional()
+})
+
+
+export const DeleteDebtParams = zod.object({
+  "id": zod.coerce.number()
+})
+
+
+export const listDomainsQueryPageDefault = 1;
+export const listDomainsQueryLimitDefault = 20;
+
+export const ListDomainsQueryParams = zod.object({
+  "search": zod.coerce.string().optional(),
+  "status": zod.coerce.string().optional(),
+  "customerId": zod.coerce.number().optional(),
+  "page": zod.coerce.number().default(listDomainsQueryPageDefault),
+  "limit": zod.coerce.number().default(listDomainsQueryLimitDefault)
+})
+
+export const ListDomainsResponse = zod.object({
+  "data": zod.array(zod.object({
+  "id": zod.number().optional(),
+  "customerId": zod.number().optional(),
+  "customerName": zod.string().nullish(),
+  "domainName": zod.string().optional(),
+  "provider": zod.string().optional(),
+  "registerDate": zod.string().optional(),
+  "expireDate": zod.string().optional(),
+  "buyPrice": zod.number().nullish(),
+  "sellPrice": zod.number().nullish(),
+  "daysUntilExpiry": zod.number().optional(),
+  "status": zod.string().optional(),
+  "note": zod.string().nullish(),
+  "createdAt": zod.string().optional(),
+  "updatedAt": zod.string().optional()
+})).optional(),
+  "pagination": zod.object({
+  "page": zod.number().optional(),
+  "limit": zod.number().optional(),
+  "total": zod.number().optional(),
+  "totalPages": zod.number().optional()
+}).optional()
+})
+
+
+export const CreateDomainBody = zod.object({
+  "customerId": zod.number().optional(),
+  "domainName": zod.string().optional(),
+  "provider": zod.string().optional(),
+  "registerDate": zod.string().optional(),
+  "expireDate": zod.string().optional(),
+  "buyPrice": zod.number().optional(),
+  "sellPrice": zod.number().optional(),
+  "status": zod.string().optional(),
+  "note": zod.string().optional()
+})
+
+
+export const GetDomainParams = zod.object({
+  "id": zod.coerce.number()
+})
+
+export const GetDomainResponse = zod.object({
+  "id": zod.number().optional(),
+  "customerId": zod.number().optional(),
+  "customerName": zod.string().nullish(),
+  "domainName": zod.string().optional(),
+  "provider": zod.string().optional(),
+  "registerDate": zod.string().optional(),
+  "expireDate": zod.string().optional(),
+  "buyPrice": zod.number().nullish(),
+  "sellPrice": zod.number().nullish(),
+  "daysUntilExpiry": zod.number().optional(),
+  "status": zod.string().optional(),
+  "note": zod.string().nullish(),
+  "createdAt": zod.string().optional(),
+  "updatedAt": zod.string().optional()
+})
+
+
+export const UpdateDomainParams = zod.object({
+  "id": zod.coerce.number()
+})
+
+export const UpdateDomainBody = zod.object({
+  "customerId": zod.number().optional(),
+  "domainName": zod.string().optional(),
+  "provider": zod.string().optional(),
+  "registerDate": zod.string().optional(),
+  "expireDate": zod.string().optional(),
+  "buyPrice": zod.number().optional(),
+  "sellPrice": zod.number().optional(),
+  "status": zod.string().optional(),
+  "note": zod.string().optional()
+})
+
+export const UpdateDomainResponse = zod.object({
+  "id": zod.number().optional(),
+  "customerId": zod.number().optional(),
+  "customerName": zod.string().nullish(),
+  "domainName": zod.string().optional(),
+  "provider": zod.string().optional(),
+  "registerDate": zod.string().optional(),
+  "expireDate": zod.string().optional(),
+  "buyPrice": zod.number().nullish(),
+  "sellPrice": zod.number().nullish(),
+  "daysUntilExpiry": zod.number().optional(),
+  "status": zod.string().optional(),
+  "note": zod.string().nullish(),
+  "createdAt": zod.string().optional(),
+  "updatedAt": zod.string().optional()
+})
+
+
+export const DeleteDomainParams = zod.object({
+  "id": zod.coerce.number()
+})
+
+
+export const listHostingsQueryPageDefault = 1;
+export const listHostingsQueryLimitDefault = 20;
+
+export const ListHostingsQueryParams = zod.object({
+  "search": zod.coerce.string().optional(),
+  "status": zod.coerce.string().optional(),
+  "customerId": zod.coerce.number().optional(),
+  "page": zod.coerce.number().default(listHostingsQueryPageDefault),
+  "limit": zod.coerce.number().default(listHostingsQueryLimitDefault)
+})
+
+export const ListHostingsResponse = zod.object({
+  "data": zod.array(zod.object({
+  "id": zod.number().optional(),
+  "customerId": zod.number().optional(),
+  "customerName": zod.string().nullish(),
+  "hostingName": zod.string().optional(),
+  "provider": zod.string().optional(),
+  "package": zod.string().optional(),
+  "capacity": zod.string().nullish(),
+  "registerDate": zod.string().optional(),
+  "expireDate": zod.string().optional(),
+  "buyPrice": zod.number().nullish(),
+  "sellPrice": zod.number().nullish(),
+  "daysUntilExpiry": zod.number().optional(),
+  "status": zod.string().optional(),
+  "note": zod.string().nullish(),
+  "createdAt": zod.string().optional(),
+  "updatedAt": zod.string().optional()
+})).optional(),
+  "pagination": zod.object({
+  "page": zod.number().optional(),
+  "limit": zod.number().optional(),
+  "total": zod.number().optional(),
+  "totalPages": zod.number().optional()
+}).optional()
+})
+
+
+export const CreateHostingBody = zod.object({
+  "customerId": zod.number().optional(),
+  "hostingName": zod.string().optional(),
+  "provider": zod.string().optional(),
+  "package": zod.string().optional(),
+  "capacity": zod.string().optional(),
+  "registerDate": zod.string().optional(),
+  "expireDate": zod.string().optional(),
+  "buyPrice": zod.number().optional(),
+  "sellPrice": zod.number().optional(),
+  "status": zod.string().optional(),
+  "note": zod.string().optional()
+})
+
+
+export const GetHostingParams = zod.object({
+  "id": zod.coerce.number()
+})
+
+export const GetHostingResponse = zod.object({
+  "id": zod.number().optional(),
+  "customerId": zod.number().optional(),
+  "customerName": zod.string().nullish(),
+  "hostingName": zod.string().optional(),
+  "provider": zod.string().optional(),
+  "package": zod.string().optional(),
+  "capacity": zod.string().nullish(),
+  "registerDate": zod.string().optional(),
+  "expireDate": zod.string().optional(),
+  "buyPrice": zod.number().nullish(),
+  "sellPrice": zod.number().nullish(),
+  "daysUntilExpiry": zod.number().optional(),
+  "status": zod.string().optional(),
+  "note": zod.string().nullish(),
+  "createdAt": zod.string().optional(),
+  "updatedAt": zod.string().optional()
+})
+
+
+export const UpdateHostingParams = zod.object({
+  "id": zod.coerce.number()
+})
+
+export const UpdateHostingBody = zod.object({
+  "customerId": zod.number().optional(),
+  "hostingName": zod.string().optional(),
+  "provider": zod.string().optional(),
+  "package": zod.string().optional(),
+  "capacity": zod.string().optional(),
+  "registerDate": zod.string().optional(),
+  "expireDate": zod.string().optional(),
+  "buyPrice": zod.number().optional(),
+  "sellPrice": zod.number().optional(),
+  "status": zod.string().optional(),
+  "note": zod.string().optional()
+})
+
+export const UpdateHostingResponse = zod.object({
+  "id": zod.number().optional(),
+  "customerId": zod.number().optional(),
+  "customerName": zod.string().nullish(),
+  "hostingName": zod.string().optional(),
+  "provider": zod.string().optional(),
+  "package": zod.string().optional(),
+  "capacity": zod.string().nullish(),
+  "registerDate": zod.string().optional(),
+  "expireDate": zod.string().optional(),
+  "buyPrice": zod.number().nullish(),
+  "sellPrice": zod.number().nullish(),
+  "daysUntilExpiry": zod.number().optional(),
+  "status": zod.string().optional(),
+  "note": zod.string().nullish(),
+  "createdAt": zod.string().optional(),
+  "updatedAt": zod.string().optional()
+})
+
+
+export const DeleteHostingParams = zod.object({
+  "id": zod.coerce.number()
+})
+
+
+export const listWebsitesQueryPageDefault = 1;
+export const listWebsitesQueryLimitDefault = 20;
+
+export const ListWebsitesQueryParams = zod.object({
+  "search": zod.coerce.string().optional(),
+  "status": zod.coerce.string().optional(),
+  "customerId": zod.coerce.number().optional(),
+  "page": zod.coerce.number().default(listWebsitesQueryPageDefault),
+  "limit": zod.coerce.number().default(listWebsitesQueryLimitDefault)
+})
+
+export const ListWebsitesResponse = zod.object({
+  "data": zod.array(zod.object({
+  "id": zod.number().optional(),
+  "customerId": zod.number().optional(),
+  "customerName": zod.string().nullish(),
+  "websiteName": zod.string().optional(),
+  "cms": zod.string().optional(),
+  "technology": zod.string().nullish(),
+  "domainId": zod.number().nullish(),
+  "domainName": zod.string().nullish(),
+  "hostingId": zod.number().nullish(),
+  "hostingName": zod.string().nullish(),
+  "startDate": zod.string().nullish(),
+  "deadline": zod.string().nullish(),
+  "deliveryDate": zod.string().nullish(),
+  "contractValue": zod.number().nullish(),
+  "adminUrl": zod.string().nullish(),
+  "status": zod.string().optional(),
+  "note": zod.string().nullish(),
+  "createdAt": zod.string().optional(),
+  "updatedAt": zod.string().optional()
+})).optional(),
+  "pagination": zod.object({
+  "page": zod.number().optional(),
+  "limit": zod.number().optional(),
+  "total": zod.number().optional(),
+  "totalPages": zod.number().optional()
+}).optional()
+})
+
+
+export const CreateWebsiteBody = zod.object({
+  "customerId": zod.number().optional(),
+  "websiteName": zod.string().optional(),
+  "cms": zod.string().optional(),
+  "technology": zod.string().optional(),
+  "domainId": zod.number().optional(),
+  "hostingId": zod.number().optional(),
+  "startDate": zod.string().optional(),
+  "deadline": zod.string().optional(),
+  "deliveryDate": zod.string().optional(),
+  "contractValue": zod.number().optional(),
+  "adminUrl": zod.string().optional(),
+  "username": zod.string().optional(),
+  "status": zod.string().optional(),
+  "note": zod.string().optional()
+})
+
+
+export const GetWebsiteParams = zod.object({
+  "id": zod.coerce.number()
+})
+
+export const GetWebsiteResponse = zod.object({
+  "id": zod.number().optional(),
+  "customerId": zod.number().optional(),
+  "customerName": zod.string().nullish(),
+  "websiteName": zod.string().optional(),
+  "cms": zod.string().optional(),
+  "technology": zod.string().nullish(),
+  "domainId": zod.number().nullish(),
+  "domainName": zod.string().nullish(),
+  "hostingId": zod.number().nullish(),
+  "hostingName": zod.string().nullish(),
+  "startDate": zod.string().nullish(),
+  "deadline": zod.string().nullish(),
+  "deliveryDate": zod.string().nullish(),
+  "contractValue": zod.number().nullish(),
+  "adminUrl": zod.string().nullish(),
+  "status": zod.string().optional(),
+  "note": zod.string().nullish(),
+  "createdAt": zod.string().optional(),
+  "updatedAt": zod.string().optional()
+})
+
+
+export const UpdateWebsiteParams = zod.object({
+  "id": zod.coerce.number()
+})
+
+export const UpdateWebsiteBody = zod.object({
+  "customerId": zod.number().optional(),
+  "websiteName": zod.string().optional(),
+  "cms": zod.string().optional(),
+  "technology": zod.string().optional(),
+  "domainId": zod.number().optional(),
+  "hostingId": zod.number().optional(),
+  "startDate": zod.string().optional(),
+  "deadline": zod.string().optional(),
+  "deliveryDate": zod.string().optional(),
+  "contractValue": zod.number().optional(),
+  "adminUrl": zod.string().optional(),
+  "username": zod.string().optional(),
+  "status": zod.string().optional(),
+  "note": zod.string().optional()
+})
+
+export const UpdateWebsiteResponse = zod.object({
+  "id": zod.number().optional(),
+  "customerId": zod.number().optional(),
+  "customerName": zod.string().nullish(),
+  "websiteName": zod.string().optional(),
+  "cms": zod.string().optional(),
+  "technology": zod.string().nullish(),
+  "domainId": zod.number().nullish(),
+  "domainName": zod.string().nullish(),
+  "hostingId": zod.number().nullish(),
+  "hostingName": zod.string().nullish(),
+  "startDate": zod.string().nullish(),
+  "deadline": zod.string().nullish(),
+  "deliveryDate": zod.string().nullish(),
+  "contractValue": zod.number().nullish(),
+  "adminUrl": zod.string().nullish(),
+  "status": zod.string().optional(),
+  "note": zod.string().nullish(),
+  "createdAt": zod.string().optional(),
+  "updatedAt": zod.string().optional()
+})
+
+
+export const DeleteWebsiteParams = zod.object({
+  "id": zod.coerce.number()
+})
+
+
+export const listFanpagesQueryPageDefault = 1;
+export const listFanpagesQueryLimitDefault = 20;
+
+export const ListFanpagesQueryParams = zod.object({
+  "search": zod.coerce.string().optional(),
+  "status": zod.coerce.string().optional(),
+  "customerId": zod.coerce.number().optional(),
+  "page": zod.coerce.number().default(listFanpagesQueryPageDefault),
+  "limit": zod.coerce.number().default(listFanpagesQueryLimitDefault)
+})
+
+export const ListFanpagesResponse = zod.object({
+  "data": zod.array(zod.object({
+  "id": zod.number().optional(),
+  "customerId": zod.number().optional(),
+  "customerName": zod.string().nullish(),
+  "pageName": zod.string().optional(),
+  "pageUrl": zod.string().optional(),
+  "pageId": zod.string().nullish(),
+  "category": zod.string().nullish(),
+  "followers": zod.number().nullish(),
+  "status": zod.string().optional(),
+  "createdAt": zod.string().optional(),
+  "updatedAt": zod.string().optional()
+})).optional(),
+  "pagination": zod.object({
+  "page": zod.number().optional(),
+  "limit": zod.number().optional(),
+  "total": zod.number().optional(),
+  "totalPages": zod.number().optional()
+}).optional()
+})
+
+
+export const CreateFanpageBody = zod.object({
+  "customerId": zod.number().optional(),
+  "pageName": zod.string().optional(),
+  "pageUrl": zod.string().optional(),
+  "pageId": zod.string().optional(),
+  "category": zod.string().optional(),
+  "followers": zod.number().optional(),
+  "status": zod.string().optional()
+})
+
+
+export const GetFanpageParams = zod.object({
+  "id": zod.coerce.number()
+})
+
+export const GetFanpageResponse = zod.object({
+  "id": zod.number().optional(),
+  "customerId": zod.number().optional(),
+  "customerName": zod.string().nullish(),
+  "pageName": zod.string().optional(),
+  "pageUrl": zod.string().optional(),
+  "pageId": zod.string().nullish(),
+  "category": zod.string().nullish(),
+  "followers": zod.number().nullish(),
+  "status": zod.string().optional(),
+  "createdAt": zod.string().optional(),
+  "updatedAt": zod.string().optional()
+})
+
+
+export const UpdateFanpageParams = zod.object({
+  "id": zod.coerce.number()
+})
+
+export const UpdateFanpageBody = zod.object({
+  "customerId": zod.number().optional(),
+  "pageName": zod.string().optional(),
+  "pageUrl": zod.string().optional(),
+  "pageId": zod.string().optional(),
+  "category": zod.string().optional(),
+  "followers": zod.number().optional(),
+  "status": zod.string().optional()
+})
+
+export const UpdateFanpageResponse = zod.object({
+  "id": zod.number().optional(),
+  "customerId": zod.number().optional(),
+  "customerName": zod.string().nullish(),
+  "pageName": zod.string().optional(),
+  "pageUrl": zod.string().optional(),
+  "pageId": zod.string().nullish(),
+  "category": zod.string().nullish(),
+  "followers": zod.number().nullish(),
+  "status": zod.string().optional(),
+  "createdAt": zod.string().optional(),
+  "updatedAt": zod.string().optional()
+})
+
+
+export const DeleteFanpageParams = zod.object({
+  "id": zod.coerce.number()
+})
+
+
+export const listFanpageServicesQueryPageDefault = 1;
+export const listFanpageServicesQueryLimitDefault = 20;
+
+export const ListFanpageServicesQueryParams = zod.object({
+  "customerId": zod.coerce.number().optional(),
+  "status": zod.coerce.string().optional(),
+  "page": zod.coerce.number().default(listFanpageServicesQueryPageDefault),
+  "limit": zod.coerce.number().default(listFanpageServicesQueryLimitDefault)
+})
+
+export const ListFanpageServicesResponse = zod.object({
+  "data": zod.array(zod.object({
+  "id": zod.number().optional(),
+  "customerId": zod.number().optional(),
+  "customerName": zod.string().nullish(),
+  "packageName": zod.string().optional(),
+  "postsPerMonth": zod.number().optional(),
+  "reelsPerMonth": zod.number().optional(),
+  "monthlyFee": zod.number().nullish(),
+  "startDate": zod.string().optional(),
+  "endDate": zod.string().optional(),
+  "status": zod.string().optional(),
+  "createdAt": zod.string().optional(),
+  "updatedAt": zod.string().optional()
+})).optional(),
+  "pagination": zod.object({
+  "page": zod.number().optional(),
+  "limit": zod.number().optional(),
+  "total": zod.number().optional(),
+  "totalPages": zod.number().optional()
+}).optional()
+})
+
+
+export const CreateFanpageServiceBody = zod.object({
+  "customerId": zod.number().optional(),
+  "packageName": zod.string().optional(),
+  "postsPerMonth": zod.number().optional(),
+  "reelsPerMonth": zod.number().optional(),
+  "monthlyFee": zod.number().optional(),
+  "startDate": zod.string().optional(),
+  "endDate": zod.string().optional(),
+  "status": zod.string().optional()
+})
+
+
+export const GetFanpageServiceParams = zod.object({
+  "id": zod.coerce.number()
+})
+
+export const GetFanpageServiceResponse = zod.object({
+  "id": zod.number().optional(),
+  "customerId": zod.number().optional(),
+  "customerName": zod.string().nullish(),
+  "packageName": zod.string().optional(),
+  "postsPerMonth": zod.number().optional(),
+  "reelsPerMonth": zod.number().optional(),
+  "monthlyFee": zod.number().nullish(),
+  "startDate": zod.string().optional(),
+  "endDate": zod.string().optional(),
+  "status": zod.string().optional(),
+  "createdAt": zod.string().optional(),
+  "updatedAt": zod.string().optional()
+})
+
+
+export const UpdateFanpageServiceParams = zod.object({
+  "id": zod.coerce.number()
+})
+
+export const UpdateFanpageServiceBody = zod.object({
+  "customerId": zod.number().optional(),
+  "packageName": zod.string().optional(),
+  "postsPerMonth": zod.number().optional(),
+  "reelsPerMonth": zod.number().optional(),
+  "monthlyFee": zod.number().optional(),
+  "startDate": zod.string().optional(),
+  "endDate": zod.string().optional(),
+  "status": zod.string().optional()
+})
+
+export const UpdateFanpageServiceResponse = zod.object({
+  "id": zod.number().optional(),
+  "customerId": zod.number().optional(),
+  "customerName": zod.string().nullish(),
+  "packageName": zod.string().optional(),
+  "postsPerMonth": zod.number().optional(),
+  "reelsPerMonth": zod.number().optional(),
+  "monthlyFee": zod.number().nullish(),
+  "startDate": zod.string().optional(),
+  "endDate": zod.string().optional(),
+  "status": zod.string().optional(),
+  "createdAt": zod.string().optional(),
+  "updatedAt": zod.string().optional()
+})
+
+
+export const DeleteFanpageServiceParams = zod.object({
+  "id": zod.coerce.number()
+})
+
+
+export const listFacebookAdsQueryPageDefault = 1;
+export const listFacebookAdsQueryLimitDefault = 20;
+
+export const ListFacebookAdsQueryParams = zod.object({
+  "customerId": zod.coerce.number().optional(),
+  "status": zod.coerce.string().optional(),
+  "page": zod.coerce.number().default(listFacebookAdsQueryPageDefault),
+  "limit": zod.coerce.number().default(listFacebookAdsQueryLimitDefault)
+})
+
+export const ListFacebookAdsResponse = zod.object({
+  "data": zod.array(zod.object({
+  "id": zod.number().optional(),
+  "customerId": zod.number().optional(),
+  "customerName": zod.string().nullish(),
+  "adAccount": zod.string().nullish(),
+  "monthlyBudget": zod.number().optional(),
+  "spend": zod.number().optional(),
+  "leads": zod.number().optional(),
+  "status": zod.string().optional(),
+  "createdAt": zod.string().optional(),
+  "updatedAt": zod.string().optional()
+})).optional(),
+  "pagination": zod.object({
+  "page": zod.number().optional(),
+  "limit": zod.number().optional(),
+  "total": zod.number().optional(),
+  "totalPages": zod.number().optional()
+}).optional()
+})
+
+
+export const CreateFacebookAdBody = zod.object({
+  "customerId": zod.number().optional(),
+  "adAccount": zod.string().optional(),
+  "monthlyBudget": zod.number().optional(),
+  "spend": zod.number().optional(),
+  "leads": zod.number().optional(),
+  "status": zod.string().optional()
+})
+
+
+export const GetFacebookAdParams = zod.object({
+  "id": zod.coerce.number()
+})
+
+export const GetFacebookAdResponse = zod.object({
+  "id": zod.number().optional(),
+  "customerId": zod.number().optional(),
+  "customerName": zod.string().nullish(),
+  "adAccount": zod.string().nullish(),
+  "monthlyBudget": zod.number().optional(),
+  "spend": zod.number().optional(),
+  "leads": zod.number().optional(),
+  "status": zod.string().optional(),
+  "createdAt": zod.string().optional(),
+  "updatedAt": zod.string().optional()
+})
+
+
+export const UpdateFacebookAdParams = zod.object({
+  "id": zod.coerce.number()
+})
+
+export const UpdateFacebookAdBody = zod.object({
+  "customerId": zod.number().optional(),
+  "adAccount": zod.string().optional(),
+  "monthlyBudget": zod.number().optional(),
+  "spend": zod.number().optional(),
+  "leads": zod.number().optional(),
+  "status": zod.string().optional()
+})
+
+export const UpdateFacebookAdResponse = zod.object({
+  "id": zod.number().optional(),
+  "customerId": zod.number().optional(),
+  "customerName": zod.string().nullish(),
+  "adAccount": zod.string().nullish(),
+  "monthlyBudget": zod.number().optional(),
+  "spend": zod.number().optional(),
+  "leads": zod.number().optional(),
+  "status": zod.string().optional(),
+  "createdAt": zod.string().optional(),
+  "updatedAt": zod.string().optional()
+})
+
+
+export const DeleteFacebookAdParams = zod.object({
+  "id": zod.coerce.number()
+})
+
+
+export const listGoogleAdsQueryPageDefault = 1;
+export const listGoogleAdsQueryLimitDefault = 20;
+
+export const ListGoogleAdsQueryParams = zod.object({
+  "customerId": zod.coerce.number().optional(),
+  "status": zod.coerce.string().optional(),
+  "page": zod.coerce.number().default(listGoogleAdsQueryPageDefault),
+  "limit": zod.coerce.number().default(listGoogleAdsQueryLimitDefault)
+})
+
+export const ListGoogleAdsResponse = zod.object({
+  "data": zod.array(zod.object({
+  "id": zod.number().optional(),
+  "customerId": zod.number().optional(),
+  "customerName": zod.string().nullish(),
+  "campaignName": zod.string().optional(),
+  "budget": zod.number().optional(),
+  "spend": zod.number().optional(),
+  "leads": zod.number().optional(),
+  "impressions": zod.number().optional(),
+  "phoneCalls": zod.number().optional(),
+  "directions": zod.number().optional(),
+  "status": zod.string().optional(),
+  "createdAt": zod.string().optional(),
+  "updatedAt": zod.string().optional()
+})).optional(),
+  "pagination": zod.object({
+  "page": zod.number().optional(),
+  "limit": zod.number().optional(),
+  "total": zod.number().optional(),
+  "totalPages": zod.number().optional()
+}).optional()
+})
+
+
+export const CreateGoogleAdBody = zod.object({
+  "customerId": zod.number().optional(),
+  "campaignName": zod.string().optional(),
+  "budget": zod.number().optional(),
+  "spend": zod.number().optional(),
+  "leads": zod.number().optional(),
+  "impressions": zod.number().optional(),
+  "phoneCalls": zod.number().optional(),
+  "directions": zod.number().optional(),
+  "status": zod.string().optional()
+})
+
+
+export const GetGoogleAdParams = zod.object({
+  "id": zod.coerce.number()
+})
+
+export const GetGoogleAdResponse = zod.object({
+  "id": zod.number().optional(),
+  "customerId": zod.number().optional(),
+  "customerName": zod.string().nullish(),
+  "campaignName": zod.string().optional(),
+  "budget": zod.number().optional(),
+  "spend": zod.number().optional(),
+  "leads": zod.number().optional(),
+  "impressions": zod.number().optional(),
+  "phoneCalls": zod.number().optional(),
+  "directions": zod.number().optional(),
+  "status": zod.string().optional(),
+  "createdAt": zod.string().optional(),
+  "updatedAt": zod.string().optional()
+})
+
+
+export const UpdateGoogleAdParams = zod.object({
+  "id": zod.coerce.number()
+})
+
+export const UpdateGoogleAdBody = zod.object({
+  "customerId": zod.number().optional(),
+  "campaignName": zod.string().optional(),
+  "budget": zod.number().optional(),
+  "spend": zod.number().optional(),
+  "leads": zod.number().optional(),
+  "impressions": zod.number().optional(),
+  "phoneCalls": zod.number().optional(),
+  "directions": zod.number().optional(),
+  "status": zod.string().optional()
+})
+
+export const UpdateGoogleAdResponse = zod.object({
+  "id": zod.number().optional(),
+  "customerId": zod.number().optional(),
+  "customerName": zod.string().nullish(),
+  "campaignName": zod.string().optional(),
+  "budget": zod.number().optional(),
+  "spend": zod.number().optional(),
+  "leads": zod.number().optional(),
+  "impressions": zod.number().optional(),
+  "phoneCalls": zod.number().optional(),
+  "directions": zod.number().optional(),
+  "status": zod.string().optional(),
+  "createdAt": zod.string().optional(),
+  "updatedAt": zod.string().optional()
+})
+
+
+export const DeleteGoogleAdParams = zod.object({
+  "id": zod.coerce.number()
+})
+
+
+export const listGoogleProfilesQueryPageDefault = 1;
+export const listGoogleProfilesQueryLimitDefault = 20;
+
+export const ListGoogleProfilesQueryParams = zod.object({
+  "search": zod.coerce.string().optional(),
+  "customerId": zod.coerce.number().optional(),
+  "page": zod.coerce.number().default(listGoogleProfilesQueryPageDefault),
+  "limit": zod.coerce.number().default(listGoogleProfilesQueryLimitDefault)
+})
+
+export const ListGoogleProfilesResponse = zod.object({
+  "data": zod.array(zod.object({
+  "id": zod.number().optional(),
+  "customerId": zod.number().optional(),
+  "customerName": zod.string().nullish(),
+  "businessName": zod.string().optional(),
+  "mapLink": zod.string().nullish(),
+  "category": zod.string().nullish(),
+  "reviewCount": zod.number().nullish(),
+  "rating": zod.number().nullish(),
+  "status": zod.string().optional(),
+  "createdAt": zod.string().optional(),
+  "updatedAt": zod.string().optional()
+})).optional(),
+  "pagination": zod.object({
+  "page": zod.number().optional(),
+  "limit": zod.number().optional(),
+  "total": zod.number().optional(),
+  "totalPages": zod.number().optional()
+}).optional()
+})
+
+
+export const CreateGoogleProfileBody = zod.object({
+  "customerId": zod.number().optional(),
+  "businessName": zod.string().optional(),
+  "mapLink": zod.string().optional(),
+  "category": zod.string().optional(),
+  "reviewCount": zod.number().optional(),
+  "rating": zod.number().optional(),
+  "status": zod.string().optional()
+})
+
+
+export const GetGoogleProfileParams = zod.object({
+  "id": zod.coerce.number()
+})
+
+export const GetGoogleProfileResponse = zod.object({
+  "id": zod.number().optional(),
+  "customerId": zod.number().optional(),
+  "customerName": zod.string().nullish(),
+  "businessName": zod.string().optional(),
+  "mapLink": zod.string().nullish(),
+  "category": zod.string().nullish(),
+  "reviewCount": zod.number().nullish(),
+  "rating": zod.number().nullish(),
+  "status": zod.string().optional(),
+  "createdAt": zod.string().optional(),
+  "updatedAt": zod.string().optional()
+})
+
+
+export const UpdateGoogleProfileParams = zod.object({
+  "id": zod.coerce.number()
+})
+
+export const UpdateGoogleProfileBody = zod.object({
+  "customerId": zod.number().optional(),
+  "businessName": zod.string().optional(),
+  "mapLink": zod.string().optional(),
+  "category": zod.string().optional(),
+  "reviewCount": zod.number().optional(),
+  "rating": zod.number().optional(),
+  "status": zod.string().optional()
+})
+
+export const UpdateGoogleProfileResponse = zod.object({
+  "id": zod.number().optional(),
+  "customerId": zod.number().optional(),
+  "customerName": zod.string().nullish(),
+  "businessName": zod.string().optional(),
+  "mapLink": zod.string().nullish(),
+  "category": zod.string().nullish(),
+  "reviewCount": zod.number().nullish(),
+  "rating": zod.number().nullish(),
+  "status": zod.string().optional(),
+  "createdAt": zod.string().optional(),
+  "updatedAt": zod.string().optional()
+})
+
+
+export const DeleteGoogleProfileParams = zod.object({
+  "id": zod.coerce.number()
+})
+
+
+export const listEmployeesQueryPageDefault = 1;
+export const listEmployeesQueryLimitDefault = 20;
+
+export const ListEmployeesQueryParams = zod.object({
+  "search": zod.coerce.string().optional(),
+  "status": zod.coerce.string().optional(),
+  "page": zod.coerce.number().default(listEmployeesQueryPageDefault),
+  "limit": zod.coerce.number().default(listEmployeesQueryLimitDefault)
+})
+
+export const ListEmployeesResponse = zod.object({
+  "data": zod.array(zod.object({
+  "id": zod.number().optional(),
+  "fullName": zod.string().optional(),
+  "phone": zod.string().optional(),
+  "email": zod.string().optional(),
+  "role": zod.string().optional(),
+  "status": zod.string().optional(),
+  "createdAt": zod.string().optional(),
+  "updatedAt": zod.string().optional()
+})).optional(),
+  "pagination": zod.object({
+  "page": zod.number().optional(),
+  "limit": zod.number().optional(),
+  "total": zod.number().optional(),
+  "totalPages": zod.number().optional()
+}).optional()
+})
+
+
+export const CreateEmployeeBody = zod.object({
+  "fullName": zod.string().optional(),
+  "phone": zod.string().optional(),
+  "email": zod.string().optional(),
+  "role": zod.string().optional(),
+  "status": zod.string().optional()
+})
+
+
+export const GetEmployeeParams = zod.object({
+  "id": zod.coerce.number()
+})
+
+export const GetEmployeeResponse = zod.object({
+  "id": zod.number().optional(),
+  "fullName": zod.string().optional(),
+  "phone": zod.string().optional(),
+  "email": zod.string().optional(),
+  "role": zod.string().optional(),
+  "status": zod.string().optional(),
+  "createdAt": zod.string().optional(),
+  "updatedAt": zod.string().optional()
+})
+
+
+export const UpdateEmployeeParams = zod.object({
+  "id": zod.coerce.number()
+})
+
+export const UpdateEmployeeBody = zod.object({
+  "fullName": zod.string().optional(),
+  "phone": zod.string().optional(),
+  "email": zod.string().optional(),
+  "role": zod.string().optional(),
+  "status": zod.string().optional()
+})
+
+export const UpdateEmployeeResponse = zod.object({
+  "id": zod.number().optional(),
+  "fullName": zod.string().optional(),
+  "phone": zod.string().optional(),
+  "email": zod.string().optional(),
+  "role": zod.string().optional(),
+  "status": zod.string().optional(),
+  "createdAt": zod.string().optional(),
+  "updatedAt": zod.string().optional()
+})
+
+
+export const DeleteEmployeeParams = zod.object({
+  "id": zod.coerce.number()
+})
+
+

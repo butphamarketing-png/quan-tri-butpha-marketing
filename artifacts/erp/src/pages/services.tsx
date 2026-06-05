@@ -62,7 +62,7 @@ export default function Services() {
     catch { toast({ title: "Có lỗi xảy ra", variant: "destructive" }); }
   };
 
-  const rows = (data?.data ?? []) as Record<string, unknown>[];
+  const rows = (data?.data ?? []) as unknown as Record<string, unknown>[];
   const columns = [
     { key: "name", header: "Tên Dịch Vụ" },
     { key: "type", header: "Loại", render: (r: Record<string, unknown>) => <StatusBadge status={r.type as string} /> },

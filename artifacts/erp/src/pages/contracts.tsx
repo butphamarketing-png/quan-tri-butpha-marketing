@@ -55,7 +55,7 @@ export default function Contracts() {
     catch { toast({ title: "Có lỗi xảy ra", variant: "destructive" }); }
   };
 
-  const rows = (data?.data ?? []) as Record<string, unknown>[];
+  const rows = (data?.data ?? []) as unknown as Record<string, unknown>[];
   const columns = [
     { key: "code", header: "Mã HĐ" },
     { key: "title", header: "Tên Hợp Đồng" },
@@ -81,8 +81,8 @@ export default function Contracts() {
               <div className="space-y-1"><Label>Mã Hợp Đồng *</Label><Input required value={form.code} onChange={e => setForm({ ...form, code: e.target.value })} placeholder="HD-2026-XXX" /></div>
               <div className="space-y-1"><Label>Trạng Thái</Label><Select value={form.status} onValueChange={v => setForm({ ...form, status: v })}><SelectTrigger><SelectValue /></SelectTrigger><SelectContent><SelectItem value="draft">Nháp</SelectItem><SelectItem value="active">Hiệu lực</SelectItem><SelectItem value="completed">Hoàn thành</SelectItem><SelectItem value="cancelled">Đã hủy</SelectItem></SelectContent></Select></div>
               <div className="col-span-2 space-y-1"><Label>Tên Hợp Đồng *</Label><Input required value={form.title} onChange={e => setForm({ ...form, title: e.target.value })} /></div>
-              <div className="space-y-1"><Label>Khách Hàng *</Label><Select value={form.customerId} onValueChange={v => setForm({ ...form, customerId: v })}><SelectTrigger><SelectValue placeholder="Chọn KH" /></SelectTrigger><SelectContent>{(customers?.data ?? []).map((c: Record<string, unknown>) => <SelectItem key={String(c.id)} value={String(c.id)}>{String(c.name)}</SelectItem>)}</SelectContent></Select></div>
-              <div className="space-y-1"><Label>Dịch Vụ</Label><Select value={form.serviceId} onValueChange={v => setForm({ ...form, serviceId: v })}><SelectTrigger><SelectValue placeholder="Chọn DV" /></SelectTrigger><SelectContent><SelectItem value="">Không có</SelectItem>{(services?.data ?? []).map((s: Record<string, unknown>) => <SelectItem key={String(s.id)} value={String(s.id)}>{String(s.name)}</SelectItem>)}</SelectContent></Select></div>
+              <div className="space-y-1"><Label>Khách Hàng *</Label><Select value={form.customerId} onValueChange={v => setForm({ ...form, customerId: v })}><SelectTrigger><SelectValue placeholder="Chọn KH" /></SelectTrigger><SelectContent>{(customers?.data ?? []).map((c: any) => <SelectItem key={String(c.id)} value={String(c.id)}>{String(c.name)}</SelectItem>)}</SelectContent></Select></div>
+              <div className="space-y-1"><Label>Dịch Vụ</Label><Select value={form.serviceId} onValueChange={v => setForm({ ...form, serviceId: v })}><SelectTrigger><SelectValue placeholder="Chọn DV" /></SelectTrigger><SelectContent><SelectItem value="">Không có</SelectItem>{(services?.data ?? []).map((s: any) => <SelectItem key={String(s.id)} value={String(s.id)}>{String(s.name)}</SelectItem>)}</SelectContent></Select></div>
               <div className="space-y-1"><Label>Giá Trị HĐ (VNĐ) *</Label><Input type="number" required value={form.totalValue} onChange={e => setForm({ ...form, totalValue: e.target.value })} /></div>
               <div className="space-y-1"><Label>Ngày Bắt Đầu</Label><Input type="date" value={form.startDate} onChange={e => setForm({ ...form, startDate: e.target.value })} /></div>
               <div className="col-span-2 space-y-1"><Label>Ngày Kết Thúc / Hạn</Label><Input type="date" value={form.dueDate} onChange={e => setForm({ ...form, dueDate: e.target.value })} /></div>

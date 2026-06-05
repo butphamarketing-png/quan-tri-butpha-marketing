@@ -438,6 +438,316 @@ export interface AuditLogList {
   limit: number;
 }
 
+export interface Pagination {
+  page?: number;
+  limit?: number;
+  total?: number;
+  totalPages?: number;
+}
+
+export interface Debt {
+  id?: number;
+  customerId?: number;
+  /** @nullable */
+  customerName?: string | null;
+  /** @nullable */
+  contractId?: number | null;
+  totalAmount?: number;
+  paidAmount?: number;
+  dueDate?: string;
+  status?: string;
+  createdAt?: string;
+  updatedAt?: string;
+}
+
+export interface DebtInput {
+  customerId?: number;
+  contractId?: number;
+  totalAmount?: number;
+  paidAmount?: number;
+  dueDate?: string;
+  status?: string;
+}
+
+export interface Domain {
+  id?: number;
+  customerId?: number;
+  /** @nullable */
+  customerName?: string | null;
+  domainName?: string;
+  provider?: string;
+  registerDate?: string;
+  expireDate?: string;
+  /** @nullable */
+  buyPrice?: number | null;
+  /** @nullable */
+  sellPrice?: number | null;
+  daysUntilExpiry?: number;
+  status?: string;
+  /** @nullable */
+  note?: string | null;
+  createdAt?: string;
+  updatedAt?: string;
+}
+
+export interface DomainInput {
+  customerId?: number;
+  domainName?: string;
+  provider?: string;
+  registerDate?: string;
+  expireDate?: string;
+  buyPrice?: number;
+  sellPrice?: number;
+  status?: string;
+  note?: string;
+}
+
+export interface Hosting {
+  id?: number;
+  customerId?: number;
+  /** @nullable */
+  customerName?: string | null;
+  hostingName?: string;
+  provider?: string;
+  package?: string;
+  /** @nullable */
+  capacity?: string | null;
+  registerDate?: string;
+  expireDate?: string;
+  /** @nullable */
+  buyPrice?: number | null;
+  /** @nullable */
+  sellPrice?: number | null;
+  daysUntilExpiry?: number;
+  status?: string;
+  /** @nullable */
+  note?: string | null;
+  createdAt?: string;
+  updatedAt?: string;
+}
+
+export interface HostingInput {
+  customerId?: number;
+  hostingName?: string;
+  provider?: string;
+  package?: string;
+  capacity?: string;
+  registerDate?: string;
+  expireDate?: string;
+  buyPrice?: number;
+  sellPrice?: number;
+  status?: string;
+  note?: string;
+}
+
+export interface Website {
+  id?: number;
+  customerId?: number;
+  /** @nullable */
+  customerName?: string | null;
+  websiteName?: string;
+  cms?: string;
+  /** @nullable */
+  technology?: string | null;
+  /** @nullable */
+  domainId?: number | null;
+  /** @nullable */
+  domainName?: string | null;
+  /** @nullable */
+  hostingId?: number | null;
+  /** @nullable */
+  hostingName?: string | null;
+  /** @nullable */
+  startDate?: string | null;
+  /** @nullable */
+  deadline?: string | null;
+  /** @nullable */
+  deliveryDate?: string | null;
+  /** @nullable */
+  contractValue?: number | null;
+  /** @nullable */
+  adminUrl?: string | null;
+  status?: string;
+  /** @nullable */
+  note?: string | null;
+  createdAt?: string;
+  updatedAt?: string;
+}
+
+export interface WebsiteInput {
+  customerId?: number;
+  websiteName?: string;
+  cms?: string;
+  technology?: string;
+  domainId?: number;
+  hostingId?: number;
+  startDate?: string;
+  deadline?: string;
+  deliveryDate?: string;
+  contractValue?: number;
+  adminUrl?: string;
+  username?: string;
+  status?: string;
+  note?: string;
+}
+
+export interface Fanpage {
+  id?: number;
+  customerId?: number;
+  /** @nullable */
+  customerName?: string | null;
+  pageName?: string;
+  pageUrl?: string;
+  /** @nullable */
+  pageId?: string | null;
+  /** @nullable */
+  category?: string | null;
+  /** @nullable */
+  followers?: number | null;
+  status?: string;
+  createdAt?: string;
+  updatedAt?: string;
+}
+
+export interface FanpageInput {
+  customerId?: number;
+  pageName?: string;
+  pageUrl?: string;
+  pageId?: string;
+  category?: string;
+  followers?: number;
+  status?: string;
+}
+
+export interface FanpageService {
+  id?: number;
+  customerId?: number;
+  /** @nullable */
+  customerName?: string | null;
+  packageName?: string;
+  postsPerMonth?: number;
+  reelsPerMonth?: number;
+  /** @nullable */
+  monthlyFee?: number | null;
+  startDate?: string;
+  endDate?: string;
+  status?: string;
+  createdAt?: string;
+  updatedAt?: string;
+}
+
+export interface FanpageServiceInput {
+  customerId?: number;
+  packageName?: string;
+  postsPerMonth?: number;
+  reelsPerMonth?: number;
+  monthlyFee?: number;
+  startDate?: string;
+  endDate?: string;
+  status?: string;
+}
+
+export interface FacebookAd {
+  id?: number;
+  customerId?: number;
+  /** @nullable */
+  customerName?: string | null;
+  /** @nullable */
+  adAccount?: string | null;
+  monthlyBudget?: number;
+  spend?: number;
+  leads?: number;
+  status?: string;
+  createdAt?: string;
+  updatedAt?: string;
+}
+
+export interface FacebookAdInput {
+  customerId?: number;
+  adAccount?: string;
+  monthlyBudget?: number;
+  spend?: number;
+  leads?: number;
+  status?: string;
+}
+
+export interface GoogleAd {
+  id?: number;
+  customerId?: number;
+  /** @nullable */
+  customerName?: string | null;
+  campaignName?: string;
+  budget?: number;
+  spend?: number;
+  leads?: number;
+  impressions?: number;
+  phoneCalls?: number;
+  directions?: number;
+  status?: string;
+  createdAt?: string;
+  updatedAt?: string;
+}
+
+export interface GoogleAdInput {
+  customerId?: number;
+  campaignName?: string;
+  budget?: number;
+  spend?: number;
+  leads?: number;
+  impressions?: number;
+  phoneCalls?: number;
+  directions?: number;
+  status?: string;
+}
+
+export interface GoogleProfile {
+  id?: number;
+  customerId?: number;
+  /** @nullable */
+  customerName?: string | null;
+  businessName?: string;
+  /** @nullable */
+  mapLink?: string | null;
+  /** @nullable */
+  category?: string | null;
+  /** @nullable */
+  reviewCount?: number | null;
+  /** @nullable */
+  rating?: number | null;
+  status?: string;
+  createdAt?: string;
+  updatedAt?: string;
+}
+
+export interface GoogleProfileInput {
+  customerId?: number;
+  businessName?: string;
+  mapLink?: string;
+  category?: string;
+  reviewCount?: number;
+  rating?: number;
+  status?: string;
+}
+
+export interface Employee {
+  id?: number;
+  fullName?: string;
+  phone?: string;
+  email?: string;
+  role?: string;
+  status?: string;
+  createdAt?: string;
+  updatedAt?: string;
+}
+
+export interface EmployeeInput {
+  fullName?: string;
+  phone?: string;
+  email?: string;
+  role?: string;
+  status?: string;
+}
+
 export type ListCustomersParams = {
 search?: string;
 page?: number;
@@ -591,5 +901,141 @@ fromDate?: string;
 toDate?: string;
 page?: number;
 limit?: number;
+};
+
+export type LoginAuthBody = {
+  email: string;
+  password: string;
+};
+
+export type LoginAuth200User = { [key: string]: unknown };
+
+export type LoginAuth200 = {
+  token?: string;
+  user?: LoginAuth200User;
+};
+
+export type ListDebtsParams = {
+customerId?: number;
+status?: string;
+page?: number;
+limit?: number;
+};
+
+export type ListDebts200 = {
+  data?: Debt[];
+  pagination?: Pagination;
+};
+
+export type ListDomainsParams = {
+search?: string;
+status?: string;
+customerId?: number;
+page?: number;
+limit?: number;
+};
+
+export type ListDomains200 = {
+  data?: Domain[];
+  pagination?: Pagination;
+};
+
+export type ListHostingsParams = {
+search?: string;
+status?: string;
+customerId?: number;
+page?: number;
+limit?: number;
+};
+
+export type ListHostings200 = {
+  data?: Hosting[];
+  pagination?: Pagination;
+};
+
+export type ListWebsitesParams = {
+search?: string;
+status?: string;
+customerId?: number;
+page?: number;
+limit?: number;
+};
+
+export type ListWebsites200 = {
+  data?: Website[];
+  pagination?: Pagination;
+};
+
+export type ListFanpagesParams = {
+search?: string;
+status?: string;
+customerId?: number;
+page?: number;
+limit?: number;
+};
+
+export type ListFanpages200 = {
+  data?: Fanpage[];
+  pagination?: Pagination;
+};
+
+export type ListFanpageServicesParams = {
+customerId?: number;
+status?: string;
+page?: number;
+limit?: number;
+};
+
+export type ListFanpageServices200 = {
+  data?: FanpageService[];
+  pagination?: Pagination;
+};
+
+export type ListFacebookAdsParams = {
+customerId?: number;
+status?: string;
+page?: number;
+limit?: number;
+};
+
+export type ListFacebookAds200 = {
+  data?: FacebookAd[];
+  pagination?: Pagination;
+};
+
+export type ListGoogleAdsParams = {
+customerId?: number;
+status?: string;
+page?: number;
+limit?: number;
+};
+
+export type ListGoogleAds200 = {
+  data?: GoogleAd[];
+  pagination?: Pagination;
+};
+
+export type ListGoogleProfilesParams = {
+search?: string;
+customerId?: number;
+page?: number;
+limit?: number;
+};
+
+export type ListGoogleProfiles200 = {
+  data?: GoogleProfile[];
+  pagination?: Pagination;
+};
+
+export type ListEmployeesParams = {
+search?: string;
+status?: string;
+page?: number;
+limit?: number;
+};
+
+export type ListEmployees200 = {
+  data?: Employee[];
+  pagination?: Pagination;
 };
 

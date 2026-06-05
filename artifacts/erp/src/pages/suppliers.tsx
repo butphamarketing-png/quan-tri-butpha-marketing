@@ -51,7 +51,7 @@ export default function Suppliers() {
     catch { toast({ title: "Có lỗi xảy ra", variant: "destructive" }); }
   };
 
-  const rows = (data?.data ?? []) as Record<string, unknown>[];
+  const rows = (data?.data ?? []) as unknown as Record<string, unknown>[];
   const columns = [
     { key: "name", header: "Tên Nhà Cung Cấp" },
     { key: "phone", header: "Điện Thoại" },

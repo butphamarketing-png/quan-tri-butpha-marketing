@@ -56,7 +56,7 @@ export default function Customers() {
     catch { toast({ title: "Có lỗi xảy ra", variant: "destructive" }); }
   };
 
-  const rows = (data?.data ?? []) as Record<string, unknown>[];
+  const rows = (data?.data ?? []) as unknown as Record<string, unknown>[];
   const columns = [
     { key: "name", header: "Tên Khách Hàng" },
     { key: "phone", header: "Điện Thoại" },

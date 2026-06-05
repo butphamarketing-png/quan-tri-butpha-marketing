@@ -111,7 +111,7 @@ export default function Expenses() {
     }
   };
 
-  const rows = (data?.data ?? []) as Record<string, unknown>[];
+  const rows = (data?.data ?? []) as unknown as Record<string, unknown>[];
   const columns = [
     { key: "code", header: "Mã PC" },
     { key: "expenseDate", header: "Ngày Chi", render: (r: Record<string, unknown>) => formatDate(r.expenseDate as string) },
@@ -155,7 +155,7 @@ export default function Expenses() {
                   <SelectTrigger><SelectValue placeholder="Chọn NCC" /></SelectTrigger>
                   <SelectContent>
                     <SelectItem value="">Không có</SelectItem>
-                    {(suppliers?.data ?? []).map((s: Record<string, unknown>) => <SelectItem key={String(s.id)} value={String(s.id)}>{String(s.name)}</SelectItem>)}
+                    {(suppliers?.data ?? []).map((s: any) => <SelectItem key={String(s.id)} value={String(s.id)}>{String(s.name)}</SelectItem>)}
                   </SelectContent>
                 </Select>
               </div>
@@ -165,7 +165,7 @@ export default function Expenses() {
                   <SelectTrigger><SelectValue placeholder="Chọn dịch vụ" /></SelectTrigger>
                   <SelectContent>
                     <SelectItem value="">Không có</SelectItem>
-                    {(services?.data ?? []).map((s: Record<string, unknown>) => <SelectItem key={String(s.id)} value={String(s.id)}>{String(s.name)}</SelectItem>)}
+                    {(services?.data ?? []).map((s: any) => <SelectItem key={String(s.id)} value={String(s.id)}>{String(s.name)}</SelectItem>)}
                   </SelectContent>
                 </Select>
               </div>

@@ -1,3 +1,7 @@
 - [Express 5 return pattern](express5-return.md) — all async route handlers must `return res.*()` or TS7030 fires
 - [Drizzle date string coercion](drizzle-date-coercion.md) — date columns use mode:"string"; Zod params may emit Date, wrap with String()
 - [Stale lib declarations pattern](stale-lib-declarations.md) — run typecheck:libs before leaf artifact typecheck or TS2305 fires for valid exports
+- [Orval Zod index re-export](orval-zod-index.md) — api-zod index.ts must only re-export from `./generated/api`, NOT `./generated/types` — otherwise TS2308 fires when Orval generates same names in both.
+- [OpenAPI YAML structure](openapi-yaml-structure.md) — New paths must be placed inside `paths:` section (before `components:`); new schemas inside `components/schemas:`. Never append to end of file blindly.
+- [Customer name field](customer-name-field.md) — Customers DB table column is `name`, not `companyName`. Joins and selects must use `customersTable.name`.
+- [ERP DataTable type casts](erp-datatable-casts.md) — Orval-typed arrays need `as unknown as Record<string, unknown>[]` double-cast for DataTable; `.map()/.filter()` callbacks on typed arrays need `any` or matching typed params.
