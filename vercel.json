@@ -1,0 +1,17 @@
+{
+  "version": 2,
+  "root": ".",
+  "buildCommand": "pnpm install && pnpm run build:api",
+  "outputDirectory": "artifacts/api-server/dist",
+  "functions": {
+    "artifacts/api-server/dist/index.mjs": {
+      "runtime": "@vercel/node@3"
+    }
+  },
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "artifacts/api-server/dist/index.mjs"
+    }
+  ]
+}
