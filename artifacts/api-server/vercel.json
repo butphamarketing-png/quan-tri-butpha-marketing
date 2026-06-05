@@ -1,11 +1,24 @@
 {
   "version": 2,
-  "buildCommand": "cd ../.. && pnpm install && cd artifacts/api-server && node build.mjs",
-  "outputDirectory": "dist",
+  "builds": [
+    {
+      "src": "src/index.ts",
+      "use": "@vercel/node",
+      "config": {
+        "includeFiles": [
+          "src/**",
+          "../../lib/**",
+          "../../pnpm-lock.yaml",
+          "../../pnpm-workspace.yaml",
+          "../../package.json"
+        ]
+      }
+    }
+  ],
   "routes": [
     {
       "src": "/(.*)",
-      "dest": "dist/index.mjs"
+      "dest": "src/index.ts"
     }
   ]
 }
