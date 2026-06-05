@@ -1,22 +1,13 @@
 {
   "version": 2,
   "framework": null,
-  "installCommand": "npm install -g pnpm@10.10.0 && pnpm install --no-frozen-lockfile",
-  "buildCommand": "pnpm run build:api && cd artifacts/erp && pnpm run build",
-  "outputDirectory": "artifacts/erp/dist/public",
+  "installCommand": "npm install -g pnpm@10.10.0 && pnpm install --no-frozen-lockfile --ignore-scripts",
+  "buildCommand": "pnpm run build:api",
+  "outputDirectory": "artifacts/api-server/dist",
   "routes": [
     {
-      "src": "/api/(.*)",
-      "dest": "/api/index.mjs"
-    },
-    {
       "src": "/(.*)",
-      "dest": "/artifacts/erp/dist/public/$1",
-      "check": true
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/artifacts/erp/dist/public/index.html"
+      "dest": "artifacts/api-server/dist/index.mjs"
     }
   ]
 }
