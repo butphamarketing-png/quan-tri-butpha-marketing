@@ -4,7 +4,7 @@
   "outputDirectory": "artifacts/api-server/dist",
   "functions": {
     "artifacts/api-server/dist/index.mjs": {
-      "runtime": "@vercel/node@3"
+      "runtime": "nodejs20.x"
     }
   },
   "routes": [
