@@ -21076,7 +21076,7 @@ var require_route = __commonJS({
         sync = 0;
       }
     };
-    Route.prototype.all = function all(handler) {
+    Route.prototype.all = function all(handler2) {
       const callbacks = flatten.call(slice.call(arguments), Infinity);
       if (callbacks.length === 0) {
         throw new TypeError("argument handler is required");
@@ -21094,7 +21094,7 @@ var require_route = __commonJS({
       return this;
     };
     methods.forEach(function(method) {
-      Route.prototype[method] = function(handler) {
+      Route.prototype[method] = function(handler2) {
         const callbacks = flatten.call(slice.call(arguments), Infinity);
         if (callbacks.length === 0) {
           throw new TypeError("argument handler is required");
@@ -21297,17 +21297,17 @@ var require_router = __commonJS({
         }
       }
     };
-    Router24.prototype.use = function use(handler) {
+    Router24.prototype.use = function use(handler2) {
       let offset = 0;
       let path = "/";
-      if (typeof handler !== "function") {
-        let arg = handler;
+      if (typeof handler2 !== "function") {
+        let arg = handler2;
         while (Array.isArray(arg) && arg.length !== 0) {
           arg = arg[0];
         }
         if (typeof arg !== "function") {
           offset = 1;
-          path = handler;
+          path = handler2;
         }
       }
       const callbacks = flatten.call(slice.call(arguments, offset), Infinity);
@@ -65956,8 +65956,11 @@ var app_default = app;
 var src_default = async (req, res) => {
   await app_default(req, res);
 };
+var handler = async (req, res) => {
+  await app_default(req, res);
+};
 var rawPort = process.env["PORT"];
-if (rawPort && process.env.NODE_ENV !== "production") {
+if (rawPort) {
   const port = Number(rawPort);
   if (!Number.isNaN(port) && port > 0) {
     app_default.listen(port, () => {
@@ -65966,7 +65969,8 @@ if (rawPort && process.env.NODE_ENV !== "production") {
   }
 }
 export {
-  src_default as default
+  src_default as default,
+  handler
 };
 /*! Bundled license information:
 
