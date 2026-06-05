@@ -1,0 +1,3 @@
+- [Express 5 return pattern](express5-return.md) — all async route handlers must `return res.*()` or TS7030 fires
+- [Drizzle date string coercion](drizzle-date-coercion.md) — date columns use mode:"string"; Zod params may emit Date, wrap with String()
+- [Stale lib declarations pattern](stale-lib-declarations.md) — run typecheck:libs before leaf artifact typecheck or TS2305 fires for valid exports

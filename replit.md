@@ -1,6 +1,6 @@
-# [Project name]
+# Bứt Phá Marketing ERP
 
-_Replace the heading above with the project's name, and this line with one sentence describing what this app does for users._
+A full-stack internal Marketing Agency ERP for Vietnamese agency Bứt Phá — managing financial operations, customer/supplier data, contracts, and reporting.
 
 ## Run & Operate
 
@@ -19,18 +19,36 @@ _Replace the heading above with the project's name, and this line with one sente
 - Validation: Zod (`zod/v4`), `drizzle-zod`
 - API codegen: Orval (from OpenAPI spec)
 - Build: esbuild (CJS bundle)
+- Frontend: React + Vite, Wouter routing, Recharts, Tailwind CSS v4, shadcn/ui
+- Language: Vietnamese (vi-VN)
 
 ## Where things live
 
-_Populate as you build — short repo map plus pointers to the source-of-truth file for DB schema, API contracts, theme files, etc._
+- `lib/api-spec/openapi.yaml` — source of truth for all API contracts
+- `lib/db/src/schema/` — Drizzle schema (customers, services, suppliers, contracts, receipts, expenses, audit-logs)
+- `lib/api-client-react/src/generated/` — Orval-generated React Query hooks
+- `lib/api-zod/src/generated/` — Orval-generated Zod validators
+- `artifacts/api-server/src/routes/` — Express route handlers (one file per entity)
+- `artifacts/erp/src/pages/` — All frontend pages
+- `artifacts/erp/src/components/` — Layout (Sidebar, Layout) + shared UI components
 
 ## Architecture decisions
 
-_Populate as you build — non-obvious choices a reader couldn't infer from the code (3-5 bullets)._
+- Contract-first API design: OpenAPI spec → codegen → Zod validators + React Query hooks
+- All monetary values stored as PostgreSQL `numeric` (string in JS), cast to `number` in route enrichment
+- Express 5: all route handlers must `return res.*()` — TS7030 fires without explicit return
+- Date columns use Drizzle `date` mode `"string"` (ISO `YYYY-MM-DD`); Zod params may emit `Date`, wrap with `String()`
+- Audit logging is fire-and-forget (catches errors silently) to avoid breaking main operations
 
 ## Product
 
-_Describe the high-level user-facing capabilities of this app once they exist._
+- **Phiếu Thu / Phiếu Chi** — Full CRUD for receipts and expenses with auto-generated codes (PT-xxxx / PC-xxxx)
+- **Công Nợ Phải Thu / Trả** — AR/AP views derived from contract vs payment data
+- **Hợp Đồng** — Contract management linked to customers and services; tracks paid vs remaining value
+- **Báo Cáo** — Revenue, expense, profit, cash flow, by-customer, by-service reports with charts
+- **Dashboard** — KPI cards + 12-month area chart + recent activity
+- **Danh Mục** — Customers, Suppliers, Services master data
+- **Nhật Ký** — Full audit log of all create/update/delete operations
 
 ## User preferences
 
@@ -38,7 +56,10 @@ _Populate as you build — explicit user instructions worth remembering across s
 
 ## Gotchas
 
-_Populate as you build — sharp edges, "always run X before Y" rules._
+- Always run `pnpm run typecheck:libs` before `pnpm --filter @workspace/api-server run typecheck` — stale lib declarations cause phantom TS2305 errors
+- Do NOT run `pnpm dev` at workspace root — individual workflows handle PORT + BASE_PATH
+- Express 5 requires `return res.*()` in all branches of async handlers (TS7030)
+- Drizzle date columns typed as `mode: "string"` need `String()` coercion when using Zod-parsed date params
 
 ## Pointers
 

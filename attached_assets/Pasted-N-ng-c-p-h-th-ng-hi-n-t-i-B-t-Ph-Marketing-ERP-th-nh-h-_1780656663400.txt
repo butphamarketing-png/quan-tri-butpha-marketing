@@ -1,0 +1,295 @@
+Nâng cấp hệ thống hiện tại "Bứt Phá Marketing ERP" thành hệ thống ERP + Quản Trị Tài Chính Nội Bộ dành cho Agency Marketing.
+
+LƯU Ý:
+
+* Không xây dựng phần mềm kế toán thuế.
+* Không xây dựng báo cáo tài chính theo chuẩn kế toán Việt Nam.
+* Không xây dựng hệ thống hạch toán Nợ/Có.
+* Không xây dựng kê khai thuế GTGT, TNCN, TNDN.
+
+Mục tiêu:
+
+Giúp chủ doanh nghiệp theo dõi:
+
+* Doanh thu
+* Chi phí
+* Công nợ
+* Lợi nhuận
+* Dòng tiền
+* Hiệu quả từng dịch vụ
+* Hiệu quả từng khách hàng
+
+================================
+MODULE TÀI CHÍNH
+================
+
+1. PHIẾU THU
+
+Thông tin:
+
+* Mã phiếu thu
+* Khách hàng
+* Hợp đồng
+* Dịch vụ
+* Số tiền
+* Hình thức thanh toán
+* Ngày thu
+* Người tạo
+* Ghi chú
+
+Tự động:
+
+* Cập nhật công nợ
+* Cập nhật doanh thu
+
+================================
+
+2. PHIẾU CHI
+
+Thông tin:
+
+* Mã phiếu chi
+* Nhà cung cấp
+* Loại chi phí
+* Dịch vụ liên quan
+* Số tiền
+* Ngày chi
+* Người tạo
+* Ghi chú
+
+Loại chi phí:
+
+* Domain
+* Hosting
+* Facebook Ads
+* Google Ads
+* Nhân sự
+* Văn phòng
+* Marketing
+* Khác
+
+Tự động:
+
+* Cập nhật chi phí
+
+================================
+
+3. CÔNG NỢ PHẢI THU
+
+Hiển thị:
+
+* Khách hàng
+* Tổng giá trị hợp đồng
+* Đã thanh toán
+* Còn nợ
+* Ngày đến hạn
+* Trạng thái
+
+Trạng thái:
+
+* Đã thanh toán
+* Còn nợ
+* Quá hạn
+
+Cảnh báo đỏ khi quá hạn.
+
+================================
+
+4. CÔNG NỢ PHẢI TRẢ
+
+Hiển thị:
+
+* Nhà cung cấp
+* Domain
+* Hosting
+* Quảng cáo
+* Dịch vụ khác
+
+Theo dõi:
+
+* Đã thanh toán
+* Chưa thanh toán
+
+================================
+
+5. DOANH THU
+
+Báo cáo:
+
+* Theo tháng
+* Theo quý
+* Theo năm
+
+Phân loại:
+
+* Website
+* SEO
+* Facebook
+* Google Maps
+* Hosting
+* Domain
+
+================================
+
+6. CHI PHÍ
+
+Báo cáo:
+
+* Theo tháng
+* Theo quý
+* Theo năm
+
+Phân loại:
+
+* Domain
+* Hosting
+* Ads
+* Nhân sự
+* Văn phòng
+
+================================
+
+7. LỢI NHUẬN
+
+Tự động tính:
+
+Lợi nhuận = Doanh thu - Chi phí
+
+Hiển thị:
+
+* Theo khách hàng
+* Theo dự án
+* Theo dịch vụ
+* Theo tháng
+
+================================
+
+8. BÁO CÁO DÒNG TIỀN
+
+Hiển thị:
+
+Tiền vào:
+
+* Thu từ khách hàng
+
+Tiền ra:
+
+* Chi phí vận hành
+
+Tồn quỹ:
+
+* Tổng tiền còn lại
+
+================================
+
+9. DASHBOARD TÀI CHÍNH
+
+Thẻ thống kê:
+
+* Tổng doanh thu tháng
+* Tổng chi phí tháng
+* Tổng lợi nhuận tháng
+* Tổng công nợ phải thu
+* Tổng công nợ phải trả
+* Tổng tiền mặt
+* Tổng tiền ngân hàng
+
+Biểu đồ:
+
+* Doanh thu 12 tháng
+* Chi phí 12 tháng
+* Lợi nhuận 12 tháng
+
+================================
+
+10. BÁO CÁO THEO KHÁCH HÀNG
+
+Mỗi khách hàng hiển thị:
+
+* Doanh thu
+* Chi phí
+* Lợi nhuận
+* Công nợ
+
+Ví dụ:
+
+Gia Gia Spa
+
+Doanh thu:
+50.000.000
+
+Chi phí:
+10.000.000
+
+Lợi nhuận:
+40.000.000
+
+================================
+
+11. BÁO CÁO THEO DỊCH VỤ
+
+Website:
+
+* Doanh thu
+* Chi phí
+* Lợi nhuận
+
+Facebook:
+
+* Doanh thu
+* Chi phí
+* Lợi nhuận
+
+Google Maps:
+
+* Doanh thu
+* Chi phí
+* Lợi nhuận
+
+================================
+
+YÊU CẦU KỸ THUẬT
+
+* CRUD đầy đủ
+* Search
+* Filter
+* Sort
+* Pagination
+* Export Excel
+* Import Excel
+* Dashboard realtime
+* Notification
+* Audit Log
+
+================================
+
+DATABASE
+
+Tạo thêm các bảng:
+
+* Receipts
+* Expenses
+* AccountsReceivable
+* AccountsPayable
+* CashFlow
+* ProfitReport
+* FinancialDashboard
+
+Tạo đầy đủ:
+
+* Prisma Schema
+* Migration
+* Seed Data
+
+================================
+
+KẾT QUẢ CUỐI
+
+Sau khi hoàn thành:
+
+1. Liệt kê toàn bộ bảng database mới.
+2. Liệt kê toàn bộ API mới.
+3. Liệt kê toàn bộ giao diện mới.
+4. Chạy build kiểm tra lỗi.
+5. Xác nhận hệ thống hoạt động.
+6. Không được sử dụng dữ liệu giả cho dashboard nếu database đã tồn tại.

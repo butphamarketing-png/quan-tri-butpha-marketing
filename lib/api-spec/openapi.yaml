@@ -1,22 +1,31 @@
 openapi: 3.1.0
 info:
-  # Do not change the title, if the title changes, the import paths will be broken
   title: Api
   version: 0.1.0
-  description: API specification
+  description: Bứt Phá Marketing ERP API
 servers:
   - url: /api
     description: Base API path
 tags:
   - name: health
-    description: Health operations
+  - name: customers
+  - name: services
+  - name: contracts
+  - name: suppliers
+  - name: receipts
+  - name: expenses
+  - name: accounts-receivable
+  - name: accounts-payable
+  - name: dashboard
+  - name: reports
+  - name: audit-logs
+
 paths:
   /healthz:
     get:
       operationId: healthCheck
       tags: [health]
       summary: Health check
-      description: Returns server health status
       responses:
         "200":
           description: Healthy
@@ -24,13 +33,1329 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HealthStatus"
+
+  # ── CUSTOMERS ──────────────────────────────────────────────────────────
+  /customers:
+    get:
+      operationId: listCustomers
+      tags: [customers]
+      summary: List customers
+      parameters:
+        - in: query
+          name: search
+          schema: { type: string }
+        - in: query
+          name: page
+          schema: { type: integer, default: 1 }
+        - in: query
+          name: limit
+          schema: { type: integer, default: 20 }
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CustomerList"
+    post:
+      operationId: createCustomer
+      tags: [customers]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CustomerInput"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Customer"
+
+  /customers/{id}:
+    get:
+      operationId: getCustomer
+      tags: [customers]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: integer }
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Customer"
+    patch:
+      operationId: updateCustomer
+      tags: [customers]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: integer }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CustomerUpdate"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Customer"
+    delete:
+      operationId: deleteCustomer
+      tags: [customers]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: integer }
+      responses:
+        "204":
+          description: Deleted
+
+  # ── SERVICES ───────────────────────────────────────────────────────────
+  /services:
+    get:
+      operationId: listServices
+      tags: [services]
+      summary: List services
+      parameters:
+        - in: query
+          name: search
+          schema: { type: string }
+        - in: query
+          name: page
+          schema: { type: integer, default: 1 }
+        - in: query
+          name: limit
+          schema: { type: integer, default: 20 }
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServiceList"
+    post:
+      operationId: createService
+      tags: [services]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ServiceInput"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Service"
+
+  /services/{id}:
+    patch:
+      operationId: updateService
+      tags: [services]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: integer }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ServiceUpdate"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Service"
+    delete:
+      operationId: deleteService
+      tags: [services]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: integer }
+      responses:
+        "204":
+          description: Deleted
+
+  # ── CONTRACTS ──────────────────────────────────────────────────────────
+  /contracts:
+    get:
+      operationId: listContracts
+      tags: [contracts]
+      summary: List contracts
+      parameters:
+        - in: query
+          name: customerId
+          schema: { type: integer }
+        - in: query
+          name: status
+          schema: { type: string }
+        - in: query
+          name: search
+          schema: { type: string }
+        - in: query
+          name: page
+          schema: { type: integer, default: 1 }
+        - in: query
+          name: limit
+          schema: { type: integer, default: 20 }
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ContractList"
+    post:
+      operationId: createContract
+      tags: [contracts]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ContractInput"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Contract"
+
+  /contracts/{id}:
+    get:
+      operationId: getContract
+      tags: [contracts]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: integer }
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Contract"
+    patch:
+      operationId: updateContract
+      tags: [contracts]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: integer }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ContractUpdate"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Contract"
+    delete:
+      operationId: deleteContract
+      tags: [contracts]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: integer }
+      responses:
+        "204":
+          description: Deleted
+
+  # ── SUPPLIERS ──────────────────────────────────────────────────────────
+  /suppliers:
+    get:
+      operationId: listSuppliers
+      tags: [suppliers]
+      summary: List suppliers
+      parameters:
+        - in: query
+          name: search
+          schema: { type: string }
+        - in: query
+          name: page
+          schema: { type: integer, default: 1 }
+        - in: query
+          name: limit
+          schema: { type: integer, default: 20 }
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SupplierList"
+    post:
+      operationId: createSupplier
+      tags: [suppliers]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SupplierInput"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Supplier"
+
+  /suppliers/{id}:
+    patch:
+      operationId: updateSupplier
+      tags: [suppliers]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: integer }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SupplierUpdate"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Supplier"
+    delete:
+      operationId: deleteSupplier
+      tags: [suppliers]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: integer }
+      responses:
+        "204":
+          description: Deleted
+
+  # ── RECEIPTS (Phiếu Thu) ───────────────────────────────────────────────
+  /receipts:
+    get:
+      operationId: listReceipts
+      tags: [receipts]
+      summary: List receipts
+      parameters:
+        - in: query
+          name: customerId
+          schema: { type: integer }
+        - in: query
+          name: contractId
+          schema: { type: integer }
+        - in: query
+          name: serviceId
+          schema: { type: integer }
+        - in: query
+          name: fromDate
+          schema: { type: string, format: date }
+        - in: query
+          name: toDate
+          schema: { type: string, format: date }
+        - in: query
+          name: search
+          schema: { type: string }
+        - in: query
+          name: page
+          schema: { type: integer, default: 1 }
+        - in: query
+          name: limit
+          schema: { type: integer, default: 20 }
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReceiptList"
+    post:
+      operationId: createReceipt
+      tags: [receipts]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ReceiptInput"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Receipt"
+
+  /receipts/{id}:
+    get:
+      operationId: getReceipt
+      tags: [receipts]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: integer }
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Receipt"
+    patch:
+      operationId: updateReceipt
+      tags: [receipts]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: integer }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ReceiptUpdate"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Receipt"
+    delete:
+      operationId: deleteReceipt
+      tags: [receipts]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: integer }
+      responses:
+        "204":
+          description: Deleted
+
+  # ── EXPENSES (Phiếu Chi) ───────────────────────────────────────────────
+  /expenses:
+    get:
+      operationId: listExpenses
+      tags: [expenses]
+      summary: List expenses
+      parameters:
+        - in: query
+          name: supplierId
+          schema: { type: integer }
+        - in: query
+          name: category
+          schema: { type: string }
+        - in: query
+          name: serviceId
+          schema: { type: integer }
+        - in: query
+          name: fromDate
+          schema: { type: string, format: date }
+        - in: query
+          name: toDate
+          schema: { type: string, format: date }
+        - in: query
+          name: search
+          schema: { type: string }
+        - in: query
+          name: page
+          schema: { type: integer, default: 1 }
+        - in: query
+          name: limit
+          schema: { type: integer, default: 20 }
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExpenseList"
+    post:
+      operationId: createExpense
+      tags: [expenses]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ExpenseInput"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Expense"
+
+  /expenses/{id}:
+    get:
+      operationId: getExpense
+      tags: [expenses]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: integer }
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Expense"
+    patch:
+      operationId: updateExpense
+      tags: [expenses]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: integer }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ExpenseUpdate"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Expense"
+    delete:
+      operationId: deleteExpense
+      tags: [expenses]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: integer }
+      responses:
+        "204":
+          description: Deleted
+
+  # ── ACCOUNTS RECEIVABLE (Công Nợ Phải Thu) ────────────────────────────
+  /accounts-receivable:
+    get:
+      operationId: listAccountsReceivable
+      tags: [accounts-receivable]
+      summary: List accounts receivable
+      parameters:
+        - in: query
+          name: status
+          schema: { type: string, enum: [paid, unpaid, overdue] }
+        - in: query
+          name: customerId
+          schema: { type: integer }
+        - in: query
+          name: search
+          schema: { type: string }
+        - in: query
+          name: page
+          schema: { type: integer, default: 1 }
+        - in: query
+          name: limit
+          schema: { type: integer, default: 20 }
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AccountsReceivableList"
+
+  # ── ACCOUNTS PAYABLE (Công Nợ Phải Trả) ──────────────────────────────
+  /accounts-payable:
+    get:
+      operationId: listAccountsPayable
+      tags: [accounts-payable]
+      summary: List accounts payable
+      parameters:
+        - in: query
+          name: status
+          schema: { type: string, enum: [paid, unpaid] }
+        - in: query
+          name: supplierId
+          schema: { type: integer }
+        - in: query
+          name: search
+          schema: { type: string }
+        - in: query
+          name: page
+          schema: { type: integer, default: 1 }
+        - in: query
+          name: limit
+          schema: { type: integer, default: 20 }
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AccountsPayableList"
+
+  # ── DASHBOARD ──────────────────────────────────────────────────────────
+  /dashboard/summary:
+    get:
+      operationId: getDashboardSummary
+      tags: [dashboard]
+      summary: Financial dashboard summary
+      parameters:
+        - in: query
+          name: month
+          schema: { type: integer }
+        - in: query
+          name: year
+          schema: { type: integer }
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DashboardSummary"
+
+  /dashboard/revenue-chart:
+    get:
+      operationId: getRevenueChart
+      tags: [dashboard]
+      summary: Revenue, expense, profit chart data for last 12 months
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/MonthlyFinancial"
+
+  /dashboard/recent-activity:
+    get:
+      operationId: getRecentActivity
+      tags: [dashboard]
+      summary: Recent receipts and expenses
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RecentActivity"
+
+  # ── REPORTS ────────────────────────────────────────────────────────────
+  /reports/revenue:
+    get:
+      operationId: getRevenueReport
+      tags: [reports]
+      summary: Revenue report
+      parameters:
+        - in: query
+          name: period
+          schema: { type: string, enum: [monthly, quarterly, yearly] }
+        - in: query
+          name: year
+          schema: { type: integer }
+        - in: query
+          name: serviceType
+          schema: { type: string }
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RevenueReport"
+
+  /reports/expenses:
+    get:
+      operationId: getExpenseReport
+      tags: [reports]
+      summary: Expense report
+      parameters:
+        - in: query
+          name: period
+          schema: { type: string, enum: [monthly, quarterly, yearly] }
+        - in: query
+          name: year
+          schema: { type: integer }
+        - in: query
+          name: category
+          schema: { type: string }
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExpenseReport"
+
+  /reports/profit:
+    get:
+      operationId: getProfitReport
+      tags: [reports]
+      summary: Profit report
+      parameters:
+        - in: query
+          name: period
+          schema: { type: string, enum: [monthly, quarterly, yearly] }
+        - in: query
+          name: year
+          schema: { type: integer }
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProfitReport"
+
+  /reports/cash-flow:
+    get:
+      operationId: getCashFlowReport
+      tags: [reports]
+      summary: Cash flow report
+      parameters:
+        - in: query
+          name: fromDate
+          schema: { type: string, format: date }
+        - in: query
+          name: toDate
+          schema: { type: string, format: date }
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CashFlowReport"
+
+  /reports/by-customer:
+    get:
+      operationId: getCustomerReport
+      tags: [reports]
+      summary: Report by customer
+      parameters:
+        - in: query
+          name: year
+          schema: { type: integer }
+        - in: query
+          name: month
+          schema: { type: integer }
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/CustomerReportItem"
+
+  /reports/by-service:
+    get:
+      operationId: getServiceReport
+      tags: [reports]
+      summary: Report by service type
+      parameters:
+        - in: query
+          name: year
+          schema: { type: integer }
+        - in: query
+          name: month
+          schema: { type: integer }
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ServiceReportItem"
+
+  # ── AUDIT LOGS ─────────────────────────────────────────────────────────
+  /audit-logs:
+    get:
+      operationId: listAuditLogs
+      tags: [audit-logs]
+      summary: List audit logs
+      parameters:
+        - in: query
+          name: entityType
+          schema: { type: string }
+        - in: query
+          name: entityId
+          schema: { type: integer }
+        - in: query
+          name: action
+          schema: { type: string }
+        - in: query
+          name: fromDate
+          schema: { type: string, format: date }
+        - in: query
+          name: toDate
+          schema: { type: string, format: date }
+        - in: query
+          name: page
+          schema: { type: integer, default: 1 }
+        - in: query
+          name: limit
+          schema: { type: integer, default: 20 }
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuditLogList"
+
 components:
   schemas:
     HealthStatus:
       type: object
       properties:
-        status:
-          type: string
-      required:
-        - status
+        status: { type: string }
+      required: [status]
 
+    # ── CUSTOMER ──────────────────────────────────────────────────────────
+    Customer:
+      type: object
+      required: [id, name, phone, email, createdAt]
+      properties:
+        id: { type: integer }
+        name: { type: string }
+        phone: { type: ["string", "null"] }
+        email: { type: ["string", "null"] }
+        address: { type: ["string", "null"] }
+        notes: { type: ["string", "null"] }
+        createdAt: { type: string }
+    CustomerInput:
+      type: object
+      required: [name]
+      properties:
+        name: { type: string }
+        phone: { type: string }
+        email: { type: string }
+        address: { type: string }
+        notes: { type: string }
+    CustomerUpdate:
+      type: object
+      properties:
+        name: { type: string }
+        phone: { type: string }
+        email: { type: string }
+        address: { type: string }
+        notes: { type: string }
+    CustomerList:
+      type: object
+      required: [data, total, page, limit]
+      properties:
+        data:
+          type: array
+          items: { $ref: "#/components/schemas/Customer" }
+        total: { type: integer }
+        page: { type: integer }
+        limit: { type: integer }
+
+    # ── SERVICE ───────────────────────────────────────────────────────────
+    Service:
+      type: object
+      required: [id, name, type, createdAt]
+      properties:
+        id: { type: integer }
+        name: { type: string }
+        type: { type: string }
+        description: { type: ["string", "null"] }
+        createdAt: { type: string }
+    ServiceInput:
+      type: object
+      required: [name, type]
+      properties:
+        name: { type: string }
+        type: { type: string }
+        description: { type: string }
+    ServiceUpdate:
+      type: object
+      properties:
+        name: { type: string }
+        type: { type: string }
+        description: { type: string }
+    ServiceList:
+      type: object
+      required: [data, total, page, limit]
+      properties:
+        data:
+          type: array
+          items: { $ref: "#/components/schemas/Service" }
+        total: { type: integer }
+        page: { type: integer }
+        limit: { type: integer }
+
+    # ── CONTRACT ──────────────────────────────────────────────────────────
+    Contract:
+      type: object
+      required: [id, code, customerId, customerName, totalValue, status, startDate, createdAt]
+      properties:
+        id: { type: integer }
+        code: { type: string }
+        customerId: { type: integer }
+        customerName: { type: string }
+        serviceId: { type: ["integer", "null"] }
+        serviceName: { type: ["string", "null"] }
+        totalValue: { type: number }
+        paidAmount: { type: number }
+        remainingAmount: { type: number }
+        status: { type: string }
+        startDate: { type: string }
+        endDate: { type: ["string", "null"] }
+        dueDate: { type: ["string", "null"] }
+        notes: { type: ["string", "null"] }
+        createdAt: { type: string }
+    ContractInput:
+      type: object
+      required: [code, customerId, totalValue, startDate, status]
+      properties:
+        code: { type: string }
+        customerId: { type: integer }
+        serviceId: { type: integer }
+        totalValue: { type: number }
+        status: { type: string }
+        startDate: { type: string }
+        endDate: { type: string }
+        dueDate: { type: string }
+        notes: { type: string }
+    ContractUpdate:
+      type: object
+      properties:
+        code: { type: string }
+        customerId: { type: integer }
+        serviceId: { type: integer }
+        totalValue: { type: number }
+        status: { type: string }
+        startDate: { type: string }
+        endDate: { type: string }
+        dueDate: { type: string }
+        notes: { type: string }
+    ContractList:
+      type: object
+      required: [data, total, page, limit]
+      properties:
+        data:
+          type: array
+          items: { $ref: "#/components/schemas/Contract" }
+        total: { type: integer }
+        page: { type: integer }
+        limit: { type: integer }
+
+    # ── SUPPLIER ──────────────────────────────────────────────────────────
+    Supplier:
+      type: object
+      required: [id, name, createdAt]
+      properties:
+        id: { type: integer }
+        name: { type: string }
+        phone: { type: ["string", "null"] }
+        email: { type: ["string", "null"] }
+        address: { type: ["string", "null"] }
+        type: { type: ["string", "null"] }
+        notes: { type: ["string", "null"] }
+        createdAt: { type: string }
+    SupplierInput:
+      type: object
+      required: [name]
+      properties:
+        name: { type: string }
+        phone: { type: string }
+        email: { type: string }
+        address: { type: string }
+        type: { type: string }
+        notes: { type: string }
+    SupplierUpdate:
+      type: object
+      properties:
+        name: { type: string }
+        phone: { type: string }
+        email: { type: string }
+        address: { type: string }
+        type: { type: string }
+        notes: { type: string }
+    SupplierList:
+      type: object
+      required: [data, total, page, limit]
+      properties:
+        data:
+          type: array
+          items: { $ref: "#/components/schemas/Supplier" }
+        total: { type: integer }
+        page: { type: integer }
+        limit: { type: integer }
+
+    # ── RECEIPT (Phiếu Thu) ───────────────────────────────────────────────
+    Receipt:
+      type: object
+      required: [id, code, customerId, customerName, amount, paymentMethod, receiptDate, createdAt]
+      properties:
+        id: { type: integer }
+        code: { type: string }
+        customerId: { type: integer }
+        customerName: { type: string }
+        contractId: { type: ["integer", "null"] }
+        contractCode: { type: ["string", "null"] }
+        serviceId: { type: ["integer", "null"] }
+        serviceName: { type: ["string", "null"] }
+        amount: { type: number }
+        paymentMethod: { type: string }
+        receiptDate: { type: string }
+        createdBy: { type: string }
+        notes: { type: ["string", "null"] }
+        createdAt: { type: string }
+    ReceiptInput:
+      type: object
+      required: [customerId, amount, paymentMethod, receiptDate]
+      properties:
+        customerId: { type: integer }
+        contractId: { type: integer }
+        serviceId: { type: integer }
+        amount: { type: number }
+        paymentMethod: { type: string }
+        receiptDate: { type: string }
+        createdBy: { type: string }
+        notes: { type: string }
+    ReceiptUpdate:
+      type: object
+      properties:
+        customerId: { type: integer }
+        contractId: { type: integer }
+        serviceId: { type: integer }
+        amount: { type: number }
+        paymentMethod: { type: string }
+        receiptDate: { type: string }
+        createdBy: { type: string }
+        notes: { type: string }
+    ReceiptList:
+      type: object
+      required: [data, total, page, limit]
+      properties:
+        data:
+          type: array
+          items: { $ref: "#/components/schemas/Receipt" }
+        total: { type: integer }
+        page: { type: integer }
+        limit: { type: integer }
+
+    # ── EXPENSE (Phiếu Chi) ───────────────────────────────────────────────
+    Expense:
+      type: object
+      required: [id, code, category, amount, expenseDate, createdAt]
+      properties:
+        id: { type: integer }
+        code: { type: string }
+        supplierId: { type: ["integer", "null"] }
+        supplierName: { type: ["string", "null"] }
+        serviceId: { type: ["integer", "null"] }
+        serviceName: { type: ["string", "null"] }
+        category: { type: string }
+        amount: { type: number }
+        expenseDate: { type: string }
+        createdBy: { type: string }
+        notes: { type: ["string", "null"] }
+        createdAt: { type: string }
+    ExpenseInput:
+      type: object
+      required: [category, amount, expenseDate]
+      properties:
+        supplierId: { type: integer }
+        serviceId: { type: integer }
+        category: { type: string }
+        amount: { type: number }
+        expenseDate: { type: string }
+        createdBy: { type: string }
+        notes: { type: string }
+    ExpenseUpdate:
+      type: object
+      properties:
+        supplierId: { type: integer }
+        serviceId: { type: integer }
+        category: { type: string }
+        amount: { type: number }
+        expenseDate: { type: string }
+        createdBy: { type: string }
+        notes: { type: string }
+    ExpenseList:
+      type: object
+      required: [data, total, page, limit]
+      properties:
+        data:
+          type: array
+          items: { $ref: "#/components/schemas/Expense" }
+        total: { type: integer }
+        page: { type: integer }
+        limit: { type: integer }
+
+    # ── ACCOUNTS RECEIVABLE ───────────────────────────────────────────────
+    AccountsReceivableItem:
+      type: object
+      required: [customerId, customerName, totalContractValue, paidAmount, remainingAmount, status]
+      properties:
+        customerId: { type: integer }
+        customerName: { type: string }
+        contractId: { type: integer }
+        contractCode: { type: string }
+        totalContractValue: { type: number }
+        paidAmount: { type: number }
+        remainingAmount: { type: number }
+        dueDate: { type: ["string", "null"] }
+        status: { type: string }
+    AccountsReceivableList:
+      type: object
+      required: [data, total, page, limit, totalReceivable]
+      properties:
+        data:
+          type: array
+          items: { $ref: "#/components/schemas/AccountsReceivableItem" }
+        total: { type: integer }
+        page: { type: integer }
+        limit: { type: integer }
+        totalReceivable: { type: number }
+
+    # ── ACCOUNTS PAYABLE ──────────────────────────────────────────────────
+    AccountsPayableItem:
+      type: object
+      required: [supplierId, supplierName, category, totalAmount, paidAmount, remainingAmount, status]
+      properties:
+        supplierId: { type: integer }
+        supplierName: { type: string }
+        category: { type: string }
+        totalAmount: { type: number }
+        paidAmount: { type: number }
+        remainingAmount: { type: number }
+        status: { type: string }
+    AccountsPayableList:
+      type: object
+      required: [data, total, page, limit, totalPayable]
+      properties:
+        data:
+          type: array
+          items: { $ref: "#/components/schemas/AccountsPayableItem" }
+        total: { type: integer }
+        page: { type: integer }
+        limit: { type: integer }
+        totalPayable: { type: number }
+
+    # ── DASHBOARD ──────────────────────────────────────────────────────────
+    DashboardSummary:
+      type: object
+      required: [totalRevenue, totalExpenses, totalProfit, totalReceivable, totalPayable, cashBalance]
+      properties:
+        totalRevenue: { type: number }
+        totalExpenses: { type: number }
+        totalProfit: { type: number }
+        totalReceivable: { type: number }
+        totalPayable: { type: number }
+        cashBalance: { type: number }
+        revenueGrowth: { type: ["number", "null"] }
+        expenseGrowth: { type: ["number", "null"] }
+        profitGrowth: { type: ["number", "null"] }
+
+    MonthlyFinancial:
+      type: object
+      required: [month, year, revenue, expenses, profit]
+      properties:
+        month: { type: integer }
+        year: { type: integer }
+        label: { type: string }
+        revenue: { type: number }
+        expenses: { type: number }
+        profit: { type: number }
+
+    RecentActivity:
+      type: object
+      required: [recentReceipts, recentExpenses]
+      properties:
+        recentReceipts:
+          type: array
+          items: { $ref: "#/components/schemas/Receipt" }
+        recentExpenses:
+          type: array
+          items: { $ref: "#/components/schemas/Expense" }
+
+    # ── REPORTS ────────────────────────────────────────────────────────────
+    RevenueReportItem:
+      type: object
+      required: [label, amount]
+      properties:
+        label: { type: string }
+        amount: { type: number }
+        breakdown:
+          type: array
+          items:
+            type: object
+            required: [serviceType, amount]
+            properties:
+              serviceType: { type: string }
+              amount: { type: number }
+
+    RevenueReport:
+      type: object
+      required: [period, year, total, items]
+      properties:
+        period: { type: string }
+        year: { type: integer }
+        total: { type: number }
+        items:
+          type: array
+          items: { $ref: "#/components/schemas/RevenueReportItem" }
+
+    ExpenseReportItem:
+      type: object
+      required: [label, amount]
+      properties:
+        label: { type: string }
+        amount: { type: number }
+        breakdown:
+          type: array
+          items:
+            type: object
+            required: [category, amount]
+            properties:
+              category: { type: string }
+              amount: { type: number }
+
+    ExpenseReport:
+      type: object
+      required: [period, year, total, items]
+      properties:
+        period: { type: string }
+        year: { type: integer }
+        total: { type: number }
+        items:
+          type: array
+          items: { $ref: "#/components/schemas/ExpenseReportItem" }
+
+    ProfitReportItem:
+      type: object
+      required: [label, revenue, expenses, profit]
+      properties:
+        label: { type: string }
+        revenue: { type: number }
+        expenses: { type: number }
+        profit: { type: number }
+
+    ProfitReport:
+      type: object
+      required: [period, year, totalRevenue, totalExpenses, totalProfit, items]
+      properties:
+        period: { type: string }
+        year: { type: integer }
+        totalRevenue: { type: number }
+        totalExpenses: { type: number }
+        totalProfit: { type: number }
+        items:
+          type: array
+          items: { $ref: "#/components/schemas/ProfitReportItem" }
+
+    CashFlowReport:
+      type: object
+      required: [totalInflow, totalOutflow, netCashFlow, openingBalance, closingBalance, items]
+      properties:
+        totalInflow: { type: number }
+        totalOutflow: { type: number }
+        netCashFlow: { type: number }
+        openingBalance: { type: number }
+        closingBalance: { type: number }
+        items:
+          type: array
+          items:
+            type: object
+            required: [date, type, description, amount, balance]
+            properties:
+              date: { type: string }
+              type: { type: string }
+              description: { type: string }
+              amount: { type: number }
+              balance: { type: number }
+
+    CustomerReportItem:
+      type: object
+      required: [customerId, customerName, revenue, expenses, profit, receivable]
+      properties:
+        customerId: { type: integer }
+        customerName: { type: string }
+        revenue: { type: number }
+        expenses: { type: number }
+        profit: { type: number }
+        receivable: { type: number }
+
+    ServiceReportItem:
+      type: object
+      required: [serviceType, revenue, expenses, profit]
+      properties:
+        serviceType: { type: string }
+        revenue: { type: number }
+        expenses: { type: number }
+        profit: { type: number }
+
+    # ── AUDIT LOG ──────────────────────────────────────────────────────────
+    AuditLog:
+      type: object
+      required: [id, entityType, entityId, action, performedBy, createdAt]
+      properties:
+        id: { type: integer }
+        entityType: { type: string }
+        entityId: { type: integer }
+        action: { type: string }
+        performedBy: { type: string }
+        oldData: {}
+        newData: {}
+        createdAt: { type: string }
+    AuditLogList:
+      type: object
+      required: [data, total, page, limit]
+      properties:
+        data:
+          type: array
+          items: { $ref: "#/components/schemas/AuditLog" }
+        total: { type: integer }
+        page: { type: integer }
+        limit: { type: integer }
