@@ -1,5 +1,14 @@
 {
   "version": 2,
-  "framework": null,
-  "outputDirectory": "artifacts/api-server/dist"
+  "functions": {
+    "api/index.mjs": {
+      "runtime": "nodejs20.x"
+    }
+  },
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "/api/index.mjs"
+    }
+  ]
 }
