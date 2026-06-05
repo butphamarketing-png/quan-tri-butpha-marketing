@@ -1,12 +1,7 @@
 {
   "version": 2,
-  "buildCommand": "node build.mjs",
+  "buildCommand": "cd ../.. && pnpm install && cd artifacts/api-server && node build.mjs",
   "outputDirectory": "dist",
-  "functions": {
-    "dist/index.mjs": {
-      "runtime": "@vercel/node@3"
-    }
-  },
   "routes": [
     {
       "src": "/(.*)",
