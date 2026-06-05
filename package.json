@@ -4,8 +4,7 @@
   "license": "MIT",
   "packageManager": "pnpm@10.33.0",
   "engines": {
-    "node": ">=20",
-    "pnpm": ">=10"
+    "node": ">=20"
   },
   "scripts": {
     "build:api": "cd artifacts/api-server && node build.mjs",
