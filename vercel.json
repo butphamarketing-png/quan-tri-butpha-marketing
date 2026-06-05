@@ -1,7 +1,11 @@
 {
   "version": 2,
-  "framework": null,
-  "outputDirectory": "artifacts/api-server/dist",
+  "builds": [
+    {
+      "src": "artifacts/api-server/dist/index.mjs",
+      "use": "@vercel/node"
+    }
+  ],
   "routes": [
     {
       "src": "/(.*)",
