@@ -11,9 +11,15 @@ app.get("/api/test", (req, res) => {
 
 app.post("/api/auth/login", async (req, res) => {
   const { email, password } = req.body;
+  // Log what we received
+  console.log("Login attempt - Email:", email, ", Password:", password);
+  
   const demoEmail = process.env.DEMO_EMAIL || "admin@butpha.vn";
   const demoPassword = process.env.DEMO_PASSWORD || "admin";
-  if (email.toLowerCase().trim() === demoEmail.toLowerCase() && password === demoPassword) {
+  
+  console.log("Expected - Email:", demoEmail, ", Password:", demoPassword);
+  
+  if (email?.toLowerCase().trim() === demoEmail.toLowerCase() && password === demoPassword) {
     res.json({
       token: "demo_token_123",
       user: { id: 1, email: demoEmail, fullName: "Administrator", role: "Admin" }
