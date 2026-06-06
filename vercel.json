@@ -2,5 +2,8 @@
   "version": 2,
   "installCommand": "pnpm install --no-frozen-lockfile",
   "buildCommand": "pnpm run build:erp",
-  "outputDirectory": "artifacts/erp/dist"
+  "outputDirectory": "artifacts/erp/dist",
+  "rewrites": [
+    { "source": "/api/(.*)", "destination": "/api/index.mjs" }
+  ]
 }
