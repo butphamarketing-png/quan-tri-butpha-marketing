@@ -1,6 +1,7 @@
 {
   "version": 2,
-  "buildCommand": "pnpm install && pnpm run build:api && pnpm run build:erp",
+  "installCommand": "pnpm install --no-frozen-lockfile",
+  "buildCommand": "pnpm run build:api && pnpm run build:erp",
   "outputDirectory": "artifacts/erp/dist",
   "rewrites": [
     {
