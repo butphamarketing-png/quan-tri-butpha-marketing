@@ -3,13 +3,10 @@
   "installCommand": "pnpm install --no-frozen-lockfile",
   "buildCommand": "pnpm run build:api && pnpm run build:erp",
   "outputDirectory": "artifacts/erp/dist",
-  "functions": {
-    "artifacts/api-server/src/index.ts": {}
-  },
-  "routes": [
+  "rewrites": [
     {
-      "src": "/api/(.*)",
-      "dest": "artifacts/api-server/src/index.ts"
+      "source": "/api/(.*)",
+      "destination": "artifacts/api-server/src/index.ts"
     }
   ]
 }
