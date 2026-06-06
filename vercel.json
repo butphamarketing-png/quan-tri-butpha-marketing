@@ -4,9 +4,7 @@
   "buildCommand": "pnpm run build:api && pnpm run build:erp",
   "outputDirectory": "artifacts/erp/dist",
   "functions": {
-    "artifacts/api-server/src/index.ts": {
-      "runtime": "nodejs@22.x"
-    }
+    "artifacts/api-server/src/index.ts": {}
   },
   "routes": [
     {
