@@ -64646,10 +64646,12 @@ router12.post("/auth/login", async (req, res) => {
   try {
     const { email: email3, password } = req.body;
     if (!email3 || !password) return void res.status(400).json({ error: "Email v\xE0 m\u1EADt kh\u1EA9u l\xE0 b\u1EAFt bu\u1ED9c" });
-    if (email3.toLowerCase().trim() === "admin@butpha.vn" && password === "admin") {
+    const demoEmail = process.env.DEMO_EMAIL || "admin@butpha.vn";
+    const demoPassword = process.env.DEMO_PASSWORD || "admin";
+    if (email3.toLowerCase().trim() === demoEmail.toLowerCase() && password === demoPassword) {
       const demoUser = {
         id: 1,
-        email: "admin@butpha.vn",
+        email: demoEmail,
         fullName: "Administrator",
         role: "Admin"
       };

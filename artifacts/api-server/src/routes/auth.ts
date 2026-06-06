@@ -12,10 +12,12 @@ router.post("/auth/login", async (req, res) => {
     if (!email || !password) return void res.status(400).json({ error: "Email và mật khẩu là bắt buộc" });
 
     // Demo login for testing
-    if (email.toLowerCase().trim() === "admin@butpha.vn" && password === "admin") {
+    const demoEmail = process.env.DEMO_EMAIL || "admin@butpha.vn";
+    const demoPassword = process.env.DEMO_PASSWORD || "admin";
+    if (email.toLowerCase().trim() === demoEmail.toLowerCase() && password === demoPassword) {
       const demoUser = {
         id: 1,
-        email: "admin@butpha.vn",
+        email: demoEmail,
         fullName: "Administrator",
         role: "Admin",
       };
