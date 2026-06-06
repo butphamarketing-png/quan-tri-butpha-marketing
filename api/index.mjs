@@ -1,6 +1,4 @@
 import 'dotenv/config';
-import app from '../artifacts/api-server/src/app.js';
+import handler from '../artifacts/api-server/dist/index.mjs';
 
-export default async function handler(req, res) {
-  await app(req, res);
-}
+export default handler;

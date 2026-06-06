@@ -1,16 +1,11 @@
 {
   "version": 2,
-  "buildCommand": "pnpm install && pnpm run build:erp",
+  "buildCommand": "pnpm install && pnpm run build:api && pnpm run build:erp",
   "outputDirectory": "artifacts/erp/dist",
-  "functions": {
-    "artifacts/api-server/src/index.ts": {
-      "runtime": "@vercel/node@3"
-    }
-  },
-  "routes": [
+  "rewrites": [
     {
-      "src": "/api/(.*)",
-      "dest": "artifacts/api-server/src/index.ts"
+      "source": "/api/(.*)",
+      "destination": "/api/index.mjs"
     }
   ]
 }
