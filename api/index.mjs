@@ -85,13 +85,23 @@ app.get("/api/dashboard/recent-activity", (req, res) => {
 
 // Mock customers
 app.get("/api/customers", (req, res) => {
+  const page = Math.max(1, parseInt(req.query.page) || 1);
+  const limit = Math.max(1, Math.min(200, parseInt(req.query.limit) || 20));
+
+  const allCustomers = [
+    { id: 1, name: "Công ty TNHH ABC", companyName: "Công ty TNHH ABC", email: "abc@example.com", phone: "0123456789", address: "Hà Nội", status: "active", createdAt: "2024-01-01" },
+    { id: 2, name: "Công ty XYZ", companyName: "Công ty XYZ", email: "xyz@example.com", phone: "0987654321", address: "TP.HCM", status: "active", createdAt: "2024-02-01" },
+    { id: 3, name: "Doanh nghiệp 123", companyName: "Doanh nghiệp 123", email: "123@example.com", phone: "0912345678", address: "Đà Nẵng", status: "inactive", createdAt: "2024-03-01" },
+  ];
+
+  const total = allCustomers.length;
+  const totalPages = Math.ceil(total / limit);
+  const offset = (page - 1) * limit;
+  const data = allCustomers.slice(offset, offset + limit);
+
   res.json({
-    data: [
-      { id: 1, name: "Công ty TNHH ABC", email: "abc@example.com", phone: "0123456789", address: "Hà Nội", status: "active", createdAt: "2024-01-01" },
-      { id: 2, name: "Công ty XYZ", email: "xyz@example.com", phone: "0987654321", address: "TP.HCM", status: "active", createdAt: "2024-02-01" },
-      { id: 3, name: "Doanh nghiệp 123", email: "123@example.com", phone: "0912345678", address: "Đà Nẵng", status: "inactive", createdAt: "2024-03-01" },
-    ],
-    total: 3, page: 1, limit: 20
+    data,
+    pagination: { page, limit, total, totalPages }
   });
 });
 
@@ -117,14 +127,51 @@ app.get("/api/expenses", (req, res) => {
   });
 });
 
+const daysUntilExpiry = (expireDate) => {
+  const now = new Date();
+  const exp = new Date(expireDate);
+  return Math.ceil((exp.getTime() - now.getTime()) / (1000 * 60 * 60 * 24));
+};
+
 // Mock domains
 app.get("/api/domains", (req, res) => {
+  const page = Math.max(1, parseInt(req.query.page) || 1);
+  const limit = Math.max(1, Math.min(100, parseInt(req.query.limit) || 20));
+  const search = req.query.search;
+  const status = req.query.status;
+  const customerId = req.query.customerId ? parseInt(req.query.customerId) : undefined;
+
+  const allDomains = [
+    { id: 1, domainName: "example.com", customerId: 1, customerName: "Công ty TNHH ABC", provider: "Namecheap", registerDate: "2023-01-01", expireDate: "2025-12-31", buyPrice: 150000, sellPrice: 300000, status: "active", note: "", createdAt: "2023-01-01", updatedAt: "2023-01-01" },
+    { id: 2, domainName: "test.vn", customerId: 2, customerName: "Công ty XYZ", provider: "GoDaddy", registerDate: "2023-06-01", expireDate: "2025-06-01", buyPrice: 200000, sellPrice: 400000, status: "active", note: "", createdAt: "2023-06-01", updatedAt: "2023-06-01" },
+  ];
+
+  let filteredData = [...allDomains];
+
+  if (search) {
+    filteredData = filteredData.filter(d => 
+      d.domainName.toLowerCase().includes(search.toLowerCase()) ||
+      d.provider.toLowerCase().includes(search.toLowerCase())
+    );
+  }
+  if (status) {
+    filteredData = filteredData.filter(d => d.status === status);
+  }
+  if (customerId) {
+    filteredData = filteredData.filter(d => d.customerId === customerId);
+  }
+
+  const total = filteredData.length;
+  const totalPages = Math.ceil(total / limit);
+  const offset = (page - 1) * limit;
+  const data = filteredData.slice(offset, offset + limit);
+
   res.json({
-    data: [
-      { id: 1, domain: "example.com", customerId: 1, customerName: "Công ty TNHH ABC", registrar: "Namecheap", registrationDate: "2023-01-01", expiryDate: "2025-01-01", status: "active", createdAt: "2023-01-01" },
-      { id: 2, domain: "test.vn", customerId: 2, customerName: "Công ty XYZ", registrar: "GoDaddy", registrationDate: "2023-06-01", expiryDate: "2024-06-01", status: "active", createdAt: "2023-06-01" },
-    ],
-    total: 2, page: 1, limit: 20
+    data: data.map(d => ({
+      ...d,
+      daysUntilExpiry: daysUntilExpiry(d.expireDate)
+    })),
+    pagination: { page, limit, total, totalPages }
   });
 });
 

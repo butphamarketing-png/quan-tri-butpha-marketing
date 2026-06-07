@@ -14,7 +14,16 @@ import {
   FileText,
   Activity,
   Building2,
-  Package
+  Package,
+  Globe,
+  Server,
+  Monitor,
+  MessageSquare,
+  MessageCircle,
+  Share2,
+  MapPin,
+  User,
+  FileDollar
 } from "lucide-react";
 
 import { cn } from "@/lib/utils";
@@ -38,7 +47,20 @@ export function Sidebar() {
     {
       title: "Tổng Quan",
       items: [
-        { title: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
+        { title: "Tổng Quan", href: "/", icon: LayoutDashboard },
+      ]
+    },
+    {
+      title: "Tài Sản",
+      items: [
+        { title: "Domain", href: "/domains", icon: Globe },
+        { title: "Hosting", href: "/hostings", icon: Server },
+        { title: "Website", href: "/websites", icon: Monitor },
+        { title: "Fanpage", href: "/fanpages", icon: MessageSquare },
+        { title: "Dịch Vụ Fanpage", href: "/fanpage-services", icon: MessageCircle },
+        { title: "Google Maps", href: "/google-profiles", icon: MapPin },
+        { title: "Facebook Ads", href: "/facebook-ads", icon: Share2 },
+        { title: "Google Ads", href: "/google-ads", icon: Share2 },
       ]
     },
     {
@@ -57,8 +79,8 @@ export function Sidebar() {
         { title: "Chi Phí", href: "/reports/expenses", icon: PieChart },
         { title: "Lợi Nhuận", href: "/reports/profit", icon: BarChart3 },
         { title: "Dòng Tiền", href: "/reports/cash-flow", icon: Activity },
-        { title: "Theo Khách Hàng", href: "/reports/customers", icon: Users },
-        { title: "Theo Dịch Vụ", href: "/reports/services", icon: Package },
+        { title: "Theo Khách Hàng", href: "/reports/by-customer", icon: Users },
+        { title: "Theo Dịch Vụ", href: "/reports/by-service", icon: Package },
       ]
     },
     {
@@ -68,6 +90,8 @@ export function Sidebar() {
         { title: "Nhà Cung Cấp", href: "/suppliers", icon: Building2 },
         { title: "Dịch Vụ", href: "/services", icon: Briefcase },
         { title: "Hợp Đồng", href: "/contracts", icon: FileText },
+        { title: "Nhân Viên", href: "/employees", icon: User },
+        { title: "Công Nợ", href: "/debts", icon: FileDollar },
       ]
     },
     {
