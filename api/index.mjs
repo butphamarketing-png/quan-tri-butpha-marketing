@@ -83,6 +83,62 @@ app.get("/api/dashboard/recent-activity", (req, res) => {
   });
 });
 
+// Mock customers
+app.get("/api/customers", (req, res) => {
+  res.json({
+    data: [
+      { id: 1, name: "Công ty TNHH ABC", email: "abc@example.com", phone: "0123456789", address: "Hà Nội", status: "active", createdAt: "2024-01-01" },
+      { id: 2, name: "Công ty XYZ", email: "xyz@example.com", phone: "0987654321", address: "TP.HCM", status: "active", createdAt: "2024-02-01" },
+      { id: 3, name: "Doanh nghiệp 123", email: "123@example.com", phone: "0912345678", address: "Đà Nẵng", status: "inactive", createdAt: "2024-03-01" },
+    ],
+    total: 3, page: 1, limit: 20
+  });
+});
+
+// Mock receipts
+app.get("/api/receipts", (req, res) => {
+  res.json({
+    data: [
+      { id: 1, code: "PT001", customerId: 1, customerName: "Công ty TNHH ABC", amount: 5000000, description: "Phí dịch vụ tháng 6", receiptDate: "2024-06-05", status: "paid", createdAt: "2024-06-05" },
+      { id: 2, code: "PT002", customerId: 2, customerName: "Công ty XYZ", amount: 12000000, description: "Thanh toán hợp đồng", receiptDate: "2024-06-04", status: "paid", createdAt: "2024-06-04" },
+    ],
+    total: 2, page: 1, limit: 20
+  });
+});
+
+// Mock expenses
+app.get("/api/expenses", (req, res) => {
+  res.json({
+    data: [
+      { id: 1, code: "PC001", supplierId: 1, supplierName: "Nhà cung cấp A", amount: 2000000, description: "Phí hosting", expenseDate: "2024-06-05", status: "paid", createdAt: "2024-06-05" },
+      { id: 2, code: "PC002", supplierId: 2, supplierName: "Nhà cung cấp B", amount: 500000, description: "Phí domain", expenseDate: "2024-06-04", status: "paid", createdAt: "2024-06-04" },
+    ],
+    total: 2, page: 1, limit: 20
+  });
+});
+
+// Mock domains
+app.get("/api/domains", (req, res) => {
+  res.json({
+    data: [
+      { id: 1, domain: "example.com", customerId: 1, customerName: "Công ty TNHH ABC", registrar: "Namecheap", registrationDate: "2023-01-01", expiryDate: "2025-01-01", status: "active", createdAt: "2023-01-01" },
+      { id: 2, domain: "test.vn", customerId: 2, customerName: "Công ty XYZ", registrar: "GoDaddy", registrationDate: "2023-06-01", expiryDate: "2024-06-01", status: "active", createdAt: "2023-06-01" },
+    ],
+    total: 2, page: 1, limit: 20
+  });
+});
+
+// Mock hostings
+app.get("/api/hostings", (req, res) => {
+  res.json({
+    data: [
+      { id: 1, customerId: 1, customerName: "Công ty TNHH ABC", provider: "AWS", plan: "Basic", startDate: "2023-01-01", endDate: "2024-01-01", status: "active", createdAt: "2023-01-01" },
+      { id: 2, customerId: 2, customerName: "Công ty XYZ", provider: "Vultr", plan: "Premium", startDate: "2023-06-01", endDate: "2024-06-01", status: "active", createdAt: "2023-06-01" },
+    ],
+    total: 2, page: 1, limit: 20
+  });
+});
+
 export default async (req, res) => {
   return new Promise((resolve, reject) => {
     app(req, res, (err) => {
